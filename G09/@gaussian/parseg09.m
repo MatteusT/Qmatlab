@@ -27,18 +27,18 @@ end
 % loc = findText(text,phrase);
 % %The fourth word after number is the number of electrons
 % obj.Nelectrons = str2num(text{loc + 4});
-% 
+%
 % % Orbital coefficients
 % phrase = {'Alpha','MO','coefficients'};
 % loc = findText(text,phrase);
 % % The fifth word after alpha is the number of energies
 % obj.Nvalues = str2num(text{loc+5});
 % temp = zeros(Nvalues,1);
-% 
+%
 % for i=1:Nvalues
 %    temp(i) = str2double(text{loc + 5 + i});
 % end
-% 
+%
 % obj.orb = reshape(temp,Nenergies,Nenergies);
 
 % The hartree fock energy is after SCF Energy R
@@ -51,7 +51,7 @@ obj.Ehf = str2double(text{loc+3});
 phrase = {'MP2','Energy','R'};
 loc = findText(text,phrase);
 if loc == 0
-    obj.MP2 = Ehf;
+    obj.MP2 = obj.Ehf;
 else
 obj.MP2 = str2double(text{loc+3});
 end
@@ -106,7 +106,7 @@ end
 % for i=1:nshells
 %    shellTypes(i,1) = str2num(text{loc+4+i});
 % end
-% 
+%
 % phrase = {'Number','of','primitives','per','shell'};
 % loc = findText(text,phrase);
 % nshells = str2num(text{loc+7});
@@ -114,7 +114,7 @@ end
 % for i=1:nshells
 %    primsPerShell(i,1) = str2num(text{loc+7+i});
 % end
-% 
+%
 % phrase = {'Shell','to','atom','map'};
 % loc = findText(text,phrase);
 % nshells = str2num(text{loc+6});
@@ -122,7 +122,7 @@ end
 % for i=1:nshells
 %    shellToAtom(i,1) = str2num(text{loc+6+i});
 % end
-% 
+%
 % phrase = {'Primitive','exponents'};
 % loc = findText(text,phrase);
 % n1 = str2num(text{loc+4});
@@ -130,7 +130,7 @@ end
 % for i=1:n1
 %    primExp(i,1) = str2num(text{loc+4+i});
 % end
-% 
+%
 % phrase = {'Contraction','coefficients'};
 % loc = findText(text,phrase);
 % if (size(loc,1) > 0)
@@ -153,7 +153,7 @@ end
 % if ((size(loc,2) > 2) || (size(loc,2) < 1))
 %   error('readfchk.m: unsupported contraction in fchk file');
 % end
-% 
+%
 % % Information on the basis set. See top of file for definition of these
 % % arrays
 % atom = zeros(Nenergies, 1);
@@ -163,7 +163,7 @@ end
 % % prims{ibasis) = (2,nprims) matrix
 % % (1,:) = cont coefficients; (2,:) = prim exponents
 % prims = cell(Nenergies,1);
-% 
+%
 % nsubtypes = [1 3 6]; %  cartesian basis sets for s,p,d
 % ibasis = 0;
 % iprim = 0;
@@ -237,11 +237,11 @@ end
 % obj.Hf = str2num(text{Hf+2});
 % phrase = {'MP2','Energy','R'};
 % mp2 = findText(text,phrase);
-% 
+%
 % if loc == 0
 %     obj.Etot = obj.Hf;
 % else
 % obj.Etot = str2double(text{mp2+3});
 % end
-% 
-% 
+%
+%
