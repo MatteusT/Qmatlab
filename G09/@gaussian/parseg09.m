@@ -6,6 +6,14 @@ issueErrors = true;
 
 fch_file = [obj.dataPath, obj.filename, '.fch'];
 fid1 = fopen(fch_file,'r');
+if fid1 == -1
+    fch_file = [obj.dataPath, obj.filename, '.fchk'];
+    fid1 = fopen(fch_file,'r');
+else
+    disp( '  Missing formated checkpoint file' );
+    fclose('all')
+end
+
 t1 = textscan(fid1,'%s');
 fclose(fid1);
 text = t1{1};
