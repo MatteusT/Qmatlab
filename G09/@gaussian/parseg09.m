@@ -11,7 +11,7 @@ if fid1 == -1
     fid1 = fopen(fch_file,'r');
 else
     disp( '  Missing formated checkpoint file' );
-    fclose('all')
+    fclose('all');
 end
 
 t1 = textscan(fid1,'%s');
@@ -23,7 +23,7 @@ text = t1{1};
 phrase = {'Alpha','Orbital','Energies'};
 loc = findText(text,phrase, issueErrors);
 % The fifth word after alpha is the number of energies
-Nenergies = str2num( text{loc+5} );
+Nenergies = str2double( text{loc+5} );
 obj.Eorb = zeros(Nenergies,1);
 
 for i=1:Nenergies
@@ -67,10 +67,10 @@ end
 % the atomic numbers (Z) are after 'Atomic numbers'
 phrase = {'Atomic','numbers'};
 loc = findText(text,phrase);
-natom = str2num(text{loc+4});
+natom = str2double(text{loc+4});
 obj.Z = zeros(1,natom);
 for iatom=1:natom
-   obj.Z(1,iatom) = str2num(text{loc+4+iatom});
+   obj.Z(1,iatom) = str2double(text{loc+4+iatom});
 end
 
 % Cartesian coordinates
@@ -90,19 +90,19 @@ obj.rcart = obj.rcart / 1.889726124565062;
 % Dipole moment
 phrase = {'Dipole','Moment'};
 loc = findText(text,phrase);
-n1 = str2num(text{loc+4});
+n1 = str2double(text{loc+4});
 obj.dipole = zeros(n1,1);
 for i=1:n1
-   obj.dipole(i,1) = str2num(text{loc+4+i});
+   obj.dipole(i,1) = str2double(text{loc+4+i});
 end
 
 % Mulliken charges
 phrase = {'Mulliken','Charges'};
 loc = findText(text,phrase);
-n1 = str2num(text{loc+4});
+n1 = str2double(text{loc+4});
 obj.mulliken = zeros(1,n1);
 for i=1:n1
-   obj.mulliken(1,i) = str2num(text{loc+4+i});
+   obj.mulliken(1,i) = str2double(text{loc+4+i});
 end
 
 % % Basis set information
