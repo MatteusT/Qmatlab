@@ -60,6 +60,7 @@ classdef gaussian < handle
                 end
             end
             parseg09(obj);
+            delete('temp.chk', 'fort.*');
             fclose('all');
         end
     end
