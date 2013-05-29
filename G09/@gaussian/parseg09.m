@@ -4,8 +4,8 @@ function parseg09(obj)
 % Will have findText() issue errors for us as appropriate
 issueErrors = true;
 
-fchkfile = [obj.dataPath,'temp.fch'];
-fid1 = fopen(fchkfile,'r');
+fch_file = [obj.dataPath, obj.filename, '.fch'];
+fid1 = fopen(fch_file,'r');
 t1 = textscan(fid1,'%s');
 fclose(fid1);
 text = t1{1};
