@@ -16,7 +16,7 @@ classdef gaussian < handle
         rcart       % cartesian coordinates
         dipole      % Dipole
         filename    % Name of the file without the extension
-        densities   % SCF densities of orbitals
+        densities   % SCF densities
     end
     methods
         function runGaussian(obj)
