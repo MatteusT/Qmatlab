@@ -1,5 +1,5 @@
 qmatlab = 'C:\Users\ccollins\Documents\GitHub\Qmatlab\';
-cd(fullfile(qmatlab, 'G09'));
+cd([qmatlab, 'G09']);
 path = 'C:\Users\ccollins\Desktop\start\ordered\';
 
 mols = {'1A', '1B', '1C', '2A', '2B', '2C'};
