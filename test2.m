@@ -25,8 +25,8 @@ for i = 1:length(mols)
     g3.parseg09();
     frags{i}{3} = g3;
 
-    disp(all(g1.Z(1:end-1)==g2.Z(1:length(g1.Z)-1)));
-    disp(all(g2.Z(length(g1.Z):end)==g3.Z(1:end-1)));
+    disp([all(g1.Z(1:end-1)==g2.Z(1:length(g1.Z)-1)), ...
+          all(g2.Z(length(g1.Z):end)==g3.Z(1:end-1))]);
 end
 
 cd(qmatlab);
