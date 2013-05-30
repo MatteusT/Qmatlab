@@ -254,13 +254,11 @@ end
 % end
 %
 %
-% Orbital energies
+
 phrase = {'Total','SCF','Density'};
 loc = findText(text, phrase, issueErrors);
 ndensities = str2double(text{loc + 5});
-% The fifth word after Total is the number of energies
-obj.densities = sparse(Nenergies,Nenergies);
-
+obj.densities = zeros(Nenergies,Nenergies);
 
 r = 0;
 c = 1;
@@ -272,4 +270,3 @@ for i=1:ndensities
         c = c + 1;
     end
 end
-obj.densities = sparse(obj.densities);
