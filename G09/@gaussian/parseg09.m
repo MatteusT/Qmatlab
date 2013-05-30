@@ -30,24 +30,24 @@ for i=1:Nenergies
    obj.Eorb(i) = str2double(text{loc + 5 + i});
 end
 
-% % Number of electrons
-% phrase = {'Number','of','electrons'};
-% loc = findText(text,phrase);
-% %The fourth word after number is the number of electrons
-% obj.Nelectrons = str2num(text{loc + 4});
-%
-% % Orbital coefficients
-% phrase = {'Alpha','MO','coefficients'};
-% loc = findText(text,phrase);
-% % The fifth word after alpha is the number of energies
-% obj.Nvalues = str2num(text{loc+5});
-% temp = zeros(Nvalues,1);
-%
-% for i=1:Nvalues
-%    temp(i) = str2double(text{loc + 5 + i});
-% end
-%
-% obj.orb = reshape(temp,Nenergies,Nenergies);
+% Number of electrons
+phrase = {'Number','of','electrons'};
+loc = findText(text,phrase);
+%The fourth word after number is the number of electrons
+obj.Nelectrons = str2double(text{loc + 4});
+
+% Orbital coefficients
+phrase = {'Alpha','MO','coefficients'};
+loc = findText(text,phrase);
+% The fifth word after alpha is the number of energies
+Nvalues = str2double(text{loc+5});
+temp = zeros(Nvalues,1);
+
+for i=1:Nvalues
+   temp(i) = str2double(text{loc + 5 + i});
+end
+
+obj.orb = reshape(temp,Nenergies,Nenergies);
 
 % The hartree fock energy is after SCF Energy R
 phrase = {'SCF','Energy','R'};
@@ -104,6 +104,7 @@ obj.mulliken = zeros(1,n1);
 for i=1:n1
    obj.mulliken(1,i) = str2double(text{loc+4+i});
 end
+
 
 % % Basis set information
 % % First, read in the data as it is defined in the fchk file

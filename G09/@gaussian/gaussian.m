@@ -17,6 +17,8 @@ classdef gaussian < handle
         dipole      % Dipole
         filename    % Name of the file without the extension
         densities   % SCF densities
+        Nelectrons
+        orb
     end
     methods
         function runGaussian(obj)
