@@ -19,6 +19,7 @@ classdef gaussian < handle
         densities   % SCF densities
         Nelectrons
         orb
+        overlap
     end
     methods
         function runGaussian(obj)

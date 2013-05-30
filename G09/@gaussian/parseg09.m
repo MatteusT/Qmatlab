@@ -270,3 +270,41 @@ for i=1:ndensities
         c = c + 1;
     end
 end
+
+
+
+
+log_file = [obj.dataPath, obj.filename, '.log'];
+fid1 = fopen(log_file,'r');
+
+t1 = textscan(fid1,'%s');
+fclose(fid1);
+text = t1{1};
+
+
+phrase = {'***','Overlap','***'};
+loc = findText(text, phrase, issueErrors);
+obj.overlap= zeros(Nenergies,Nenergies);
+n = ceil(Nenergies/5);
+
+loc = loc + 3;                      % Overlap, ***
+for i = 1:n
+    r = (i - 1) * 5;                % remove 5 rows/columns for each iteration
+    if i == n                       % special case when rows left < 5
+        Nleft = mod(Nenergies, 5);
+        loc = loc + Nleft;
+    else
+        loc = loc + 5;              % 5 nums at top
+    end
+    for j = 1+r:Nenergies
+        for k = 1:5
+            obj.overlap(j, r+k) = str2num(text{loc + k});
+            if j-r == k             % first 5 rows in a set form a diag
+                break
+            end
+        end
+        loc = loc + k + 1;
+    end
+end
+
+end
