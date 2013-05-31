@@ -106,154 +106,130 @@ for i=1:n1
 end
 
 
-% % Basis set information
-% % First, read in the data as it is defined in the fchk file
-% phrase = {'Shell','types'};
-% loc = findText(text,phrase);
-% nshells = str2num(text{loc+4});
-% shellTypes = zeros(nshells,1);
-% for i=1:nshells
-%    shellTypes(i,1) = str2num(text{loc+4+i});
-% end
-%
-% phrase = {'Number','of','primitives','per','shell'};
-% loc = findText(text,phrase);
-% nshells = str2num(text{loc+7});
-% primsPerShell = zeros(nshells,1);
-% for i=1:nshells
-%    primsPerShell(i,1) = str2num(text{loc+7+i});
-% end
-%
-% phrase = {'Shell','to','atom','map'};
-% loc = findText(text,phrase);
-% nshells = str2num(text{loc+6});
-% shellToAtom = zeros(nshells,1);
-% for i=1:nshells
-%    shellToAtom(i,1) = str2num(text{loc+6+i});
-% end
-%
-% phrase = {'Primitive','exponents'};
-% loc = findText(text,phrase);
-% n1 = str2num(text{loc+4});
-% primExp = zeros(n1,1);
-% for i=1:n1
-%    primExp(i,1) = str2num(text{loc+4+i});
-% end
-%
-% phrase = {'Contraction','coefficients'};
-% loc = findText(text,phrase);
-% if (size(loc,1) > 0)
-%    n1 = str2num(text{loc(1)+4});
-%    contCoef = zeros(n1,1);
-%    for i=1:n1
-%       contCoef(i,1) = str2num(text{loc(1)+4+i});
-%    end
-% end
-% if (size(loc,1) == 2)
-%    if (strcmp(text{loc(2)-1},'P(S=P)')~=1)
-%       error('readfchk.m: unsupported contraction in fchk file');
-%    end
-%    n1 = str2num(text{loc(2)+4});
-%    contCoef2 = zeros(n1,1);
-%    for i=1:n1
-%       contCoef2(i,1) = str2num(text{loc(2)+4+i});
-%    end
-% end
-% if ((size(loc,2) > 2) || (size(loc,2) < 1))
-%   error('readfchk.m: unsupported contraction in fchk file');
-% end
-%
-% % Information on the basis set. See top of file for definition of these
-% % arrays
-% atom = zeros(Nenergies, 1);
-% type = zeros(Nenergies, 1);
-% subtype = zeros(Nenergies, 1);
-% nprims = zeros(Nenergies, 1);
-% % prims{ibasis) = (2,nprims) matrix
-% % (1,:) = cont coefficients; (2,:) = prim exponents
-% prims = cell(Nenergies,1);
-%
-% nsubtypes = [1 3 6]; %  cartesian basis sets for s,p,d
-% ibasis = 0;
-% iprim = 0;
-% for ishell = 1:nshells
-%    % stype = 0(s) 1(p) 2(d) etc.
-%    % if stype < 0, then it means we have shells up to that stype here
-%    % i.e. stype = -1, means we have both an s and p shell with identical
-%    % contractions
-%    stypeFile = shellTypes(ishell);
-%    if (stypeFile >= 0)
-%        stype = stypeFile;
-%        primTemp = zeros(2, primsPerShell(ishell));
-%        for ip = 1:primsPerShell(ishell)
-%            iprim = iprim+1;
-%            primTemp(1,ip) = contCoef(iprim);
-%            primTemp(2,ip) = primExp(iprim);
-%        end
-%        for itemp = 1:nsubtypes(stype+1)
-%            ibasis = ibasis + 1;
-%            atom(ibasis) = shellToAtom(ishell);
-%            type(ibasis) = stype;
-%            subtype(ibasis) = itemp;
-%            nprims(ibasis) = primsPerShell(ishell);
-%            prims{ibasis} = primTemp;
-%        end
-%    else
-%        for stype = 0:abs(stypeFile)
-%            primTemp = zeros(2, primsPerShell(ishell));
-%            for ip = 1:primsPerShell(ishell)
-%                iprim = iprim+1;
-%                if (stype == 0)
-%                   primTemp(1,ip) = contCoef(iprim);
-%                else
-%                   primTemp(1,ip) = contCoef2(iprim);
-%                end
-%                primTemp(2,ip) = primExp(iprim);
-%            end
-%            % reset iprim, to keep count ok
-%            if (stype < abs(stypeFile))
-%                iprim = iprim - primsPerShell(ishell);
-%            end
-%            for itemp = 1:nsubtypes(stype+1)
-%                ibasis = ibasis + 1;
-%                atom(ibasis) = shellToAtom(ishell);
-%                type(ibasis) = stype;
-%                subtype(ibasis) = itemp;
-%                nprims(ibasis) = primsPerShell(ishell);
-%                prims{ibasis} = primTemp;
-%            end
-%        end
-%    end
-% end
-% if (ibasis ~= Nenergies)
-%    error('readchk.m: bookkeeping error in creation of atom()');
-% end
-% %%
-% if (strcmp(obj.method,'hf')|| strcmp(obj.method,'HF'));
-%     Hf = find(ismember(text,'E(RHF)')==1);
-% elseif (strcmp(obj.method,'b3lyp')||strcmp(obj.method,'B3LYP'));
-%     Hf = find(ismember(text,'E(RHF)')==1);
-% elseif (strcmp(obj.method,'mp2')||strcmp(obj.method,'MP2'));
-%     Hf = find(ismember(text,'E(RHF)')==1);
-% else
-%     error('Unknown method')
-% end
-% [nfound,junk] = size(Hf);
-% if (nfound ~= 1)
-%     Hf = Hf(nfound);
-%     display(['error: found E(RHF) ',num2str(nfound),' times']);
-% end
-% obj.Hf = str2num(text{Hf+2});
-% phrase = {'MP2','Energy','R'};
-% mp2 = findText(text,phrase);
-%
-% if loc == 0
-%     obj.Etot = obj.Hf;
-% else
-% obj.Etot = str2double(text{mp2+3});
-% end
-%
-%
+% Basis set information
+% First, read in the data as it is defined in the fchk file
+phrase = {'Shell','types'};
+loc = findText(text,phrase);
+nshells = str2num(text{loc+4});
+obj.shellTypes = zeros(nshells,1);
+for i=1:nshells
+   obj.shellTypes(i,1) = str2num(text{loc+4+i});
+end
+
+phrase = {'Number','of','primitives','per','shell'};
+loc = findText(text,phrase);
+nshells = str2num(text{loc+7});
+primsPerShell = zeros(nshells,1);
+for i=1:nshells
+   primsPerShell(i,1) = str2num(text{loc+7+i});
+end
+
+phrase = {'Shell','to','atom','map'};
+loc = findText(text,phrase);
+nshells = str2num(text{loc+6});
+shellToAtom = zeros(nshells,1);
+for i=1:nshells
+   shellToAtom(i,1) = str2num(text{loc+6+i});
+end
+
+phrase = {'Primitive','exponents'};
+loc = findText(text,phrase);
+n1 = str2num(text{loc+4});
+primExp = zeros(n1,1);
+for i=1:n1
+   primExp(i,1) = str2num(text{loc+4+i});
+end
+
+phrase = {'Contraction','coefficients'};
+loc = findText(text,phrase);
+if (size(loc,1) > 0)
+   n1 = str2num(text{loc(1)+4});
+   contCoef = zeros(n1,1);
+   for i=1:n1
+      contCoef(i,1) = str2num(text{loc(1)+4+i});
+   end
+end
+if (size(loc,1) == 2)
+   if (strcmp(text{loc(2)-1},'P(S=P)')~=1)
+      error('readfchk.m: unsupported contraction in fchk file');
+   end
+   n1 = str2num(text{loc(2)+4});
+   contCoef2 = zeros(n1,1);
+   for i=1:n1
+      contCoef2(i,1) = str2num(text{loc(2)+4+i});
+   end
+end
+if ((size(loc,2) > 2) || (size(loc,2) < 1))
+  error('readfchk.m: unsupported contraction in fchk file');
+end
+
+% Information on the basis set. See top of file for definition of these
+% arrays
+atom = zeros(Nenergies, 1);
+type = zeros(Nenergies, 1);
+subtype = zeros(Nenergies, 1);
+nprims = zeros(Nenergies, 1);
+% prims{ibasis) = (2,nprims) matrix
+% (1,:) = cont coefficients; (2,:) = prim exponents
+prims = cell(Nenergies,1);
+
+nsubtypes = [1 3 6]; %  cartesian basis sets for s,p,d
+ibasis = 0;
+iprim = 0;
+for ishell = 1:nshells
+   % stype = 0(s) 1(p) 2(d) etc.
+   % if stype < 0, then it means we have shells up to that stype here
+   % i.e. stype = -1, means we have both an s and p shell with identical
+   % contractions
+   stypeFile = obj.shellTypes(ishell);
+   if (stypeFile >= 0)
+       stype = stypeFile;
+       primTemp = zeros(2, primsPerShell(ishell));
+       for ip = 1:primsPerShell(ishell)
+           iprim = iprim+1;
+           primTemp(1,ip) = contCoef(iprim);
+           primTemp(2,ip) = primExp(iprim);
+       end
+       for itemp = 1:nsubtypes(stype+1)
+           ibasis = ibasis + 1;
+           atom(ibasis) = shellToAtom(ishell);
+           type(ibasis) = stype;
+           subtype(ibasis) = itemp;
+           nprims(ibasis) = primsPerShell(ishell);
+           prims{ibasis} = primTemp;
+       end
+   else
+       for stype = 0:abs(stypeFile)
+           primTemp = zeros(2, primsPerShell(ishell));
+           for ip = 1:primsPerShell(ishell)
+               iprim = iprim+1;
+               if (stype == 0)
+                  primTemp(1,ip) = contCoef(iprim);
+               else
+                  primTemp(1,ip) = contCoef2(iprim);
+               end
+               primTemp(2,ip) = primExp(iprim);
+           end
+           % reset iprim, to keep count ok
+           if (stype < abs(stypeFile))
+               iprim = iprim - primsPerShell(ishell);
+           end
+           for itemp = 1:nsubtypes(stype+1)
+               ibasis = ibasis + 1;
+               atom(ibasis) = shellToAtom(ishell);
+               type(ibasis) = stype;
+               subtype(ibasis) = itemp;
+               nprims(ibasis) = primsPerShell(ishell);
+               prims{ibasis} = primTemp;
+           end
+       end
+   end
+end
+if (ibasis ~= Nenergies)
+   error('readchk.m: bookkeeping error in creation of atom()');
+end
+
+obj.atom = atom;
 
 phrase = {'Total','SCF','Density'};
 loc = findText(text, phrase, issueErrors);
@@ -298,7 +274,9 @@ for i = 1:n
     end
     for j = 1+r:Nenergies
         for k = 1:5
-            obj.overlap(j, r+k) = str2num(text{loc + k});
+            temp = str2num(text{loc + k});
+            obj.overlap(j, r+k) = temp;
+            obj.overlap(r+k, j) = temp;
             if j-r == k             % first 5 rows in a set form a diag
                 break
             end

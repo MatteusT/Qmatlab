@@ -20,6 +20,8 @@ classdef gaussian < handle
         Nelectrons
         orb
         overlap
+        shellTypes
+        atom
     end
     methods
         function runGaussian(obj)
