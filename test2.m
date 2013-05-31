@@ -29,4 +29,23 @@ for i = 1:length(mols)
           all(m.Z(length(f1.Z):end)==f2.Z(1:end-1))]);
 end
 
+
+r1 = find(f1.atom ~= f1.atom(end));
+
+r2 = find(f2.atom ~= f2.atom(end));
+% for i = (length(f2.Z)-1):-1:1
+%     r2 = [r2 find(f2.atom == i)'];
+% end
+
+
+orb1 = f1.orb(r1, r1);
+orb1(length(m.orb),length(r1)) = 0;
+start = length(r1)+1;
+orb2 = zeros(size(m.orb,1), size(f2.orb,2));
+orb2(start:end,1:end) = f2.orb(r2,:) * -1;
+
+
+temp1 = orb1' * m.overlap * m.orb;
+temp2 = orb2' * m.overlap * m.orb;
+
 cd(qmatlab);
