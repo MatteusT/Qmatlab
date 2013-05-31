@@ -3,30 +3,30 @@ cd([qmatlab, 'G09']);
 path = 'C:\Users\ccollins\Desktop\start\ordered\';
 
 mols = {'1A', '1B', '1C', '2A', '2B', '2C'};
-frags = {};
+frags = cell(6);
 
 for i = 1:length(mols)
     disp(mols{i});
-    g1 = gaussian;
-    g1.dataPath = path;
-    g1.filename = mols{i}(1);
-    g1.parseg09();
-    frags{i}{1} = g1;
+    f1 = gaussian;
+    f1.dataPath = path;
+    f1.filename = mols{i}(1);
+    f1.parseg09();
+    frags{i}{1} = f1;
 
-    g2 = gaussian;
-    g2.dataPath = path;
-    g2.filename = mols{i};
-    g2.parseg09();
-    frags{i}{2} = g2;
+    m = gaussian;
+    m.dataPath = path;
+    m.filename = mols{i};
+    m.parseg09();
+    frags{i}{2} = m;
 
-    g3 = gaussian;
-    g3.dataPath = path;
-    g3.filename = mols{i}(2);
-    g3.parseg09();
-    frags{i}{3} = g3;
+    f2 = gaussian;
+    f2.dataPath = path;
+    f2.filename = mols{i}(2);
+    f2.parseg09();
+    frags{i}{3} = f2;
 
-    disp([all(g1.Z(1:end-1)==g2.Z(1:length(g1.Z)-1)), ...
-          all(g2.Z(length(g1.Z):end)==g3.Z(1:end-1))]);
+    disp([all(f1.Z(1:end-1)==m.Z(1:length(f1.Z)-1)), ...
+          all(m.Z(length(f1.Z):end)==f2.Z(1:end-1))]);
 end
 
 cd(qmatlab);
