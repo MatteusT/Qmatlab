@@ -41,6 +41,39 @@ for i = 1:length(mols)
     frags{i}{3} = f2;
     frags{i,2} = temp1.^2;
     frags{i,3} = temp2.^2;
+    
+    points = [0    0.5;
+              2.25 2.75;
+              4.5 5];
+    t1 = f1.Eorb(1:end-1);
+    t2 = m.Eorb;
+    t3 = f2.Eorb(1:end-1);
+    
+    % draw levels
+    Eorbs = {t1(t1>-7), t2(t2>-7), t3(t3>-7)};
+    for j=1:length(Eorbs)
+        p = points(j,:);
+        eo = Eorbs{j};
+        for e=eo
+             line(p, [e e], 'color', [0 0 0]);
+        end    
+    end
+    
+    % draw dotted lines
+    dx = .0;
+    dottedpoints = [points(1,2)+dx points(2,1)-dx;
+                    points(3,1)-dx points(2,2)+dx];
+    for j=1:length(Eorbs{1})
+        e1 = Eorbs{1}(j);
+        e2 = Eorbs{2}(j);
+        line(dottedpoints(1,:), [e1 e2], 'LineStyle', ':', 'color', [0 0 0]);
+    end
+    
+    for j=1:length(Eorbs{3})
+        e1 = Eorbs{3}(j);
+        e2 = Eorbs{2}(j);
+        line(dottedpoints(2,:), [e1 e2], 'LineStyle', ':', 'color', [0 0 0]);
+    end
 end
 
 
