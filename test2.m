@@ -7,6 +7,7 @@ frags = cell(6);
 
 for i = 1:length(mols)
     disp(mols{i});
+%%  Parse
     f1 = gaussian(mols{i}(1), path);
     f1.parseg09();
     m = gaussian(mols{i}, path);
@@ -17,6 +18,7 @@ for i = 1:length(mols)
     disp([all(f1.Z(1:end-1)==m.Z(1:length(f1.Z)-1)), ...
           all(m.Z(length(f1.Z):end)==f2.Z(1:end-1))]);
       
+%%  Calculate
     r1 = find(f1.atom ~= f1.atom(end));
     r2 = find(f2.atom ~= f2.atom(end));
     % for i = (length(f2.Z)-1):-1:1
@@ -42,6 +44,7 @@ for i = 1:length(mols)
     frags{i,2} = temp1.^2;
     frags{i,3} = temp2.^2;
     
+%%  Draw 
     points = [0    0.5;
               2.25 2.75;
               4.5 5];
@@ -74,7 +77,6 @@ for i = 1:length(mols)
         e2 = Eorbs{2}(j);
         line(dottedpoints(2,:), [e1 e2], 'LineStyle', ':', 'color', [0 0 0]);
     end
-end
-
+ end
 
 cd(qmatlab);
