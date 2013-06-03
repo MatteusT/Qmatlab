@@ -1,17 +1,16 @@
 function parseg09(obj)
 
-
 % Will have findText() issue errors for us as appropriate
 issueErrors = true;
-
 fch_file = [obj.dataPath, obj.filename, '.fch'];
 fid1 = fopen(fch_file,'r');
 if fid1 == -1
    fch_file = [obj.dataPath, obj.filename, '.fchk'];
    fid1 = fopen(fch_file,'r');
-else
-   disp( '  Missing formated checkpoint file' );
-   fclose('all');
+   if fid1 == -1
+      disp( '  Missing formated checkpoint file' );
+      fclose('all');
+   end
 end
 
 t1 = textscan(fid1,'%s');
