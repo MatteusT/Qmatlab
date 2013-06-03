@@ -24,14 +24,22 @@ classdef gaussian < handle
         atom
     end
     methods
-        function obj = gaussian(filename, path)
-           obj.filename = filename;
+        function obj = gaussian(jobName, path, varargin)
+           obj.jobName = jobName;
            obj.dataPath = path;
+           obj.filename = obj.jobName;
+           if nargin > 2
+               obj.method = varargin{1};
+               obj.filename = [obj.filename,'_',obj.method];
+           end
+           if nargin > 3
+               obj.basisSet = varargin{2};
+               obj.filename = [obj.filename,'_',obj.basisSet];
+           end
         end
         function runGaussian(obj)
             g09exe = 'C:\G09W\g09.exe';
             gaussianPath = 'C:\G09W';
-            obj.filename = [obj.jobName,'_',obj.method,'_',obj.basisSet];
 
             template = [obj.dataPath,obj.jobName,'.gjf'];
             filetext = fileread(template);
@@ -39,7 +47,7 @@ classdef gaussian < handle
             log_file = [obj.dataPath,obj.filename,'.log'];
             gjf_file = [obj.dataPath,obj.filename,'.gjf'];
             fch_file = [obj.dataPath,obj.filename,'.fch'];
-
+            
             fid2 = fopen(log_file,'r');
             if (fid2 == -1)
                 t1 = strrep(filetext, 'METHOD', obj.method);
