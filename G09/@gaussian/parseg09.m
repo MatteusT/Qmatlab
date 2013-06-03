@@ -86,13 +86,15 @@ end
 % Convert from Bohr radii to Angstroms
 obj.rcart = obj.rcart / 1.889726124565062;
 
-% Dipole moment
-phrase = {'Dipole','Moment'};
-loc = findText(text,phrase);
-n1 = str2double(text{loc+4});
-obj.dipole = zeros(n1,1);
-for i=1:n1
-   obj.dipole(i,1) = str2double(text{loc+4+i});
+try
+    % Dipole moment
+    phrase = {'Dipole','Moment'};
+    loc = findText(text,phrase);
+    n1 = str2double(text{loc+4});
+    obj.dipole = zeros(n1,1);
+    for i=1:n1
+       obj.dipole(i,1) = str2double(text{loc+4+i});
+    end
 end
 
 % Mulliken charges
@@ -248,40 +250,40 @@ end
 
 
 
+try
+    log_file = [obj.dataPath, obj.filename, '.log'];
+    fid1 = fopen(log_file,'r');
 
-log_file = [obj.dataPath, obj.filename, '.log'];
-fid1 = fopen(log_file,'r');
-
-t1 = textscan(fid1,'%s');
-fclose(fid1);
-text = t1{1};
+    t1 = textscan(fid1,'%s');
+    fclose(fid1);
+    text = t1{1};
 
 
-phrase = {'***','Overlap','***'};
-loc = findText(text, phrase, issueErrors);
-obj.overlap= zeros(Nenergies,Nenergies);
-n = ceil(Nenergies/5);
+    phrase = {'***','Overlap','***'};
+    loc = findText(text, phrase, issueErrors);
+    obj.overlap= zeros(Nenergies,Nenergies);
+    n = ceil(Nenergies/5);
 
-loc = loc + 3;                 % Overlap, ***
-for i = 1:n
-   r = (i - 1) * 5;            % remove 5 rows/columns for each iteration
-   if i == n                  % special case when rows left < 5
-      Nleft = mod(Nenergies, 5);
-      loc = loc + Nleft;
-   else
-      loc = loc + 5;           % 5 nums at top
-   end
-   for j = 1+r:Nenergies
-      for k = 1:5
-         temp = str2num(text{loc + k});
-         obj.overlap(j, r+k) = temp;
-         obj.overlap(r+k, j) = temp;
-         if j-r == k           % first 5 rows in a set form a diag
-            break
-         end
-      end
-      loc = loc + k + 1;
-   end
+    loc = loc + 3;                 % Overlap, ***
+    for i = 1:n
+       r = (i - 1) * 5;            % remove 5 rows/columns for each iteration
+       if i == n                  % special case when rows left < 5
+          Nleft = mod(Nenergies, 5);
+          loc = loc + Nleft;
+       else
+          loc = loc + 5;           % 5 nums at top
+       end
+       for j = 1+r:Nenergies
+          for k = 1:5
+             temp = str2num(text{loc + k});
+             obj.overlap(j, r+k) = temp;
+             obj.overlap(r+k, j) = temp;
+             if j-r == k           % first 5 rows in a set form a diag
+                break
+             end
+          end
+          loc = loc + k + 1;
+       end
+    end
 end
-
 end
