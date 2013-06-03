@@ -24,6 +24,10 @@ classdef gaussian < handle
         atom
     end
     methods
+        function obj = gaussian(filename, path)
+           obj.filename = filename;
+           obj.dataPath = path;
+        end
         function runGaussian(obj)
             g09exe = 'C:\G09W\g09.exe';
             gaussianPath = 'C:\G09W';

@@ -7,23 +7,12 @@ frags = cell(6);
 
 for i = 1:length(mols)
     disp(mols{i});
-    f1 = gaussian;
-    f1.dataPath = path;
-    f1.filename = mols{i}(1);
+    f1 = gaussian(mols{i}(1), path);
     f1.parseg09();
-    frags{i}{1} = f1;
-
-    m = gaussian;
-    m.dataPath = path;
-    m.filename = mols{i};
+    m = gaussian(mols{i}, path);
     m.parseg09();
-    frags{i}{2} = m;
-
-    f2 = gaussian;
-    f2.dataPath = path;
-    f2.filename = mols{i}(2);
+    f2 = gaussian(mols{i}(2), path);
     f2.parseg09();
-    frags{i}{3} = f2;
 
     disp([all(f1.Z(1:end-1)==m.Z(1:length(f1.Z)-1)), ...
           all(m.Z(length(f1.Z):end)==f2.Z(1:end-1))]);
