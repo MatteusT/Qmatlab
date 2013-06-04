@@ -49,9 +49,9 @@ for i = 1:length(mols)
     points = [0    0.5;
               2.25 2.75;
               4.5 5];
-    t1 = f1.Eorb(1:end-1);
+    t1 = f1.Eorb(r1);
     t2 = m.Eorb;
-    t3 = f2.Eorb(1:end-1);
+    t3 = f2.Eorb(r2);
     %Eorbs = {t1(t1>-7), t2(t2>-7), t3(t3>-7)};
     Eorbs = {t1, t2, t3};
 
