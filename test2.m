@@ -63,19 +63,16 @@ for i = 1:length(mols)
     end
     
     % draw dotted lines
-    dx = .0;
+    dx = 0.0;
     dottedpoints = [points(1,2)+dx points(2,1)-dx;
-                    points(3,1)-dx points(2,2)+dx];
-    for j=1:length(Eorbs{1})
-        e1 = Eorbs{1}(j);
-        e2 = Eorbs{2}(j);
-        line(dottedpoints(1,:), [e1 e2], 'LineStyle', ':', 'color', [0 0 0]);
-    end
-    
-    for j=1:length(Eorbs{3})
-        e1 = Eorbs{3}(j);
-        e2 = Eorbs{2}(j);
-        line(dottedpoints(2,:), [e1 e2], 'LineStyle', ':', 'color', [0 0 0]);
+                    points(2,2)+dx points(3,1)-dx];
+
+    for j=1:2
+        for k=1:length(Eorbs{3})
+            e1 = Eorbs{j}(k);
+            e2 = Eorbs{j+1}(k);
+            line(dottedpoints(j,:), [e1 e2], 'LineStyle', ':', 'color', [0 0 0]);
+        end
     end
  end
 
