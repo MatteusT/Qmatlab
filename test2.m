@@ -44,7 +44,8 @@ for i = 1:length(mols)
     frags{i,2} = temp1.^2;
     frags{i,3} = temp2.^2;
     
-%%  Draw 
+%%  Draw
+    figure;
     points = [0    0.5;
               2.25 2.75;
               4.5 5];
