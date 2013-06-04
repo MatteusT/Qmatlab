@@ -2,7 +2,7 @@ qmatlab = 'C:\Users\ccollins\Documents\GitHub\Qmatlab\';
 cd([qmatlab, 'G09']);
 path = 'C:\Users\ccollins\Desktop\start\ordered\';
 
-mols = {'1A', '1B', '1C', '2A', '2B', '2C'};
+mols = {'33'};%'1A', '1B', '1C', '2A', '2B', '2C'};
 frags = cell(length(mols), 3);
 
 for i = 1:length(mols)
@@ -17,7 +17,7 @@ for i = 1:length(mols)
 
     disp([all(f1.Z(1:end-1)==m.Z(1:length(f1.Z)-1)), ...
           all(m.Z(length(f1.Z):end)==f2.Z(1:end-1))]);
-      
+
 %%  Calculate
     r1 = find(f1.atom ~= f1.atom(end));
     r2 = find(f2.atom ~= f2.atom(end));
@@ -43,7 +43,7 @@ for i = 1:length(mols)
     frags{i}{3} = f2;
     frags{i,2} = temp1.^2;
     frags{i,3} = temp2.^2;
-    
+
 %%  Draw
     figure;
     points = [0    0.5;
@@ -52,17 +52,28 @@ for i = 1:length(mols)
     t1 = f1.Eorb(1:end-1);
     t2 = m.Eorb;
     t3 = f2.Eorb(1:end-1);
+    %Eorbs = {t1(t1>-7), t2(t2>-7), t3(t3>-7)};
+    Eorbs = {t1, t2, t3};
+
+    % write homo/lumo
+    for j=1:length(frags{i,1})
+        x = mean(points(j,:));
+        homo = frags{i,1}{j}.Nelectrons/2;
+        text(x, Eorbs{j}(homo), 'HOMO', 'horizontalalignment', 'center');
+        text(x, Eorbs{j}(homo+1), 'LUMO', 'horizontalalignment', 'center');
+    end
+
+    Eorbs = {t1(t1>-7), t2(t2>-7), t3(t3>-7)};
     
     % draw levels
-    Eorbs = {t1(t1>-7), t2(t2>-7), t3(t3>-7)};
     for j=1:length(Eorbs)
         p = points(j,:);
         eo = Eorbs{j};
         for e=eo
              line(p, [e e], 'color', [0 0 0]);
-        end    
+        end
     end
-    
+
     % draw dotted lines
     dx = 0.0;
     dottedpoints = [points(1,2)+dx points(2,1)-dx;
@@ -75,6 +86,6 @@ for i = 1:length(mols)
             line(dottedpoints(j,:), [e1 e2], 'LineStyle', ':', 'color', [0 0 0]);
         end
     end
- end
+end
 
 cd(qmatlab);
