@@ -26,6 +26,14 @@ cd('C:\Users\Matteus\Qmatlab\');
 
 %%
 
-cd('C:\Users\Matteus\Qmatlab\Ampac\');
+cd('C:\Users\Matteus\Qmatlab\INDO\');
 
+In = Indo;
+dataPath = 'C:\Users\Matteus\Qmatlab\testdat\';
+jobName = 'ch4_sam1';
+parameterFile = 'C:\Users\Matteus\Qmatlab\testdat\parameters';
+config = In.defaultConfig();
+Indo(config,dataPath,jobName,parameterFile);
+
+cd('C:\Users\Matteus\Qmatlab\');
 
