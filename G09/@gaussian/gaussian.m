@@ -32,6 +32,7 @@ classdef gaussian < handle
            obj.params = params;
            obj.filename = obj.controller.template;
            for i=1:length(params)
+               obj.params{i} = num2str(obj.params{i});
                if obj.controller.inname(i)
                    obj.filename = [obj.filename, '_', obj.params{i}];
                end 
