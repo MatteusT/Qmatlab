@@ -22,6 +22,8 @@ classdef gaussian < handle
         overlap
         shellTypes
         atom
+        type
+        subtype
     end
     methods
         function obj = gaussian(jobName, path, varargin)

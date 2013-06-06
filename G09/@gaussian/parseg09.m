@@ -231,6 +231,8 @@ if (ibasis ~= Nenergies)
 end
 
 obj.atom = atom;
+obj.type = type;
+obj.subtype = subtype;
 
 phrase = {'Total','SCF','Density'};
 loc = findText(text, phrase, issueErrors);
