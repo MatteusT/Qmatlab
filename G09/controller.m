@@ -26,7 +26,13 @@ classdef controller < handle
             if length(temp) ~= 0
                 obj.iterations = obj.cartesianProduct(temp);
                 for i=1:length(obj.iterations)
-                    obj.outputs{i} = gaussian(obj, obj.iterations{i});
+                    tparam = cell(length(obj.paramNames),3);
+                    for j=1:length(obj.paramNames)
+                        tparam{j,1} = obj.paramNames{j};
+                        tparam{j,2} = obj.iterations{i}{j};
+                        tparam{j,3} = obj.inname(j);
+                    end
+                    obj.outputs{i} = gaussian(obj.dataPath, obj.template, tparam);
                 end
             else
                obj.outputs{1} = gaussian(obj, {});

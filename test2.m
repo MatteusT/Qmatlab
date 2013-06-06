@@ -8,14 +8,11 @@ frags = cell(length(mols), 3);
 for i = 1:length(mols)
     disp(mols{i});
 %%  Parse
-    c1 = controller(path, mols{i}(1),{});
-    f1 = c1.outputs{1};
+    f1 = gaussian(path, mols{i}(1),{});
     f1.parseg09();
-    c2 = controller(path, mols{i},{});
-    m = c2.outputs{1};
+    m = gaussian(path, mols{i},{});
     m.parseg09();
-    c3 = controller(path, mols{i}(2),{});
-    f2 = c3.outputs{1};
+    f2 = gaussian(path, mols{i}(2),{});
     f2.parseg09();
 
     disp([all(f1.Z(1:end-1)==m.Z(1:length(f1.Z)-1)), ...

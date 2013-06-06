@@ -3,7 +3,8 @@ classdef gaussian < handle
     %   Detailed explanation goes here
 
     properties
-        controller
+        dataPath
+        template
         params
         
         method      % Method which you want to use
@@ -27,14 +28,16 @@ classdef gaussian < handle
         subtype
     end
     methods
-        function obj = gaussian(controller, params)
-           obj.controller = controller;
+        function obj = gaussian(dataPath, template, params)
+           obj.dataPath = dataPath;
+           obj.template = template;
            obj.params = params;
-           obj.filename = obj.controller.template;
-           for i=1:length(params)
-               obj.params{i} = num2str(obj.params{i});
-               if obj.controller.inname(i)
-                   obj.filename = [obj.filename, '_', obj.params{i}];
+           
+           obj.filename = obj.template;
+           for i=1:size(obj.params,1)
+               obj.params{i,2} = num2str(obj.params{i,2});
+               if obj.params{i,3}
+                   obj.filename = [obj.filename, '_', obj.params{i,2}];
                end 
            end
         end
@@ -42,17 +45,17 @@ classdef gaussian < handle
             g09exe = 'C:\G09W\g09.exe';
             gaussianPath = 'C:\G09W';
 
-            template = [obj.controller.dataPath,obj.controller.template,'.tpl'];
-            filetext = fileread(template);
+            tpl_file = [obj.dataPath, obj.template,'.tpl'];
+            filetext = fileread(tpl_file);
 
-            log_file = [obj.controller.dataPath,obj.filename,'.log'];
-            gjf_file = [obj.controller.dataPath,obj.filename,'.gjf'];
-            fch_file = [obj.controller.dataPath,obj.filename,'.fch'];
+            log_file = [obj.dataPath, obj.filename, '.log'];
+            gjf_file = [obj.dataPath, obj.filename, '.gjf'];
+            fch_file = [obj.dataPath, obj.filename, '.fch'];
             
             fid2 = fopen(log_file,'r');
             if (fid2 == -1)
-                for i=1:length(obj.params)
-                    filetext = strrep(filetext, obj.controller.paramNames{i}, obj.params{i});
+                for i=1:size(obj.params,1)
+                    filetext = strrep(filetext, obj.params{i,1}, obj.params{i,2});
                 end 
 
                 fid1 = fopen(gjf_file,'w');
