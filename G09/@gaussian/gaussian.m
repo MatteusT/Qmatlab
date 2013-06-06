@@ -3,10 +3,11 @@ classdef gaussian < handle
     %   Detailed explanation goes here
 
     properties
+        controller
+        params
+        
         method      % Method which you want to use
         basisSet    % Basis that you want to use
-        dataPath    % Datapath where the input and the output files go
-        jobName     % Name of Job you want to run
         Ehf         % Hartree Fock Energy
         Etot        % Total Energy (same as Hf if method = HF)
         mulliken    % Mulliken charges for atoms
@@ -26,37 +27,35 @@ classdef gaussian < handle
         subtype
     end
     methods
-        function obj = gaussian(jobName, path, varargin)
-           obj.jobName = jobName;
-           obj.dataPath = path;
-           obj.filename = obj.jobName;
-           if nargin > 2
-               obj.method = varargin{1};
-               obj.filename = [obj.filename,'_',obj.method];
-           end
-           if nargin > 3
-               obj.basisSet = varargin{2};
-               obj.filename = [obj.filename,'_',obj.basisSet];
+        function obj = gaussian(controller, params)
+           obj.controller = controller;
+           obj.params = params;
+           obj.filename = obj.controller.template;
+           for i=1:length(params)
+               if obj.controller.inname(i)
+                   obj.filename = [obj.filename, '_', obj.params{i}];
+               end 
            end
         end
         function runGaussian(obj)
             g09exe = 'C:\G09W\g09.exe';
             gaussianPath = 'C:\G09W';
 
-            template = [obj.dataPath,obj.jobName,'.tpl'];
+            template = [obj.controller.dataPath,obj.controller.template,'.tpl'];
             filetext = fileread(template);
 
-            log_file = [obj.dataPath,obj.filename,'.log'];
-            gjf_file = [obj.dataPath,obj.filename,'.gjf'];
-            fch_file = [obj.dataPath,obj.filename,'.fch'];
+            log_file = [obj.controller.dataPath,obj.filename,'.log'];
+            gjf_file = [obj.controller.dataPath,obj.filename,'.gjf'];
+            fch_file = [obj.controller.dataPath,obj.filename,'.fch'];
             
             fid2 = fopen(log_file,'r');
             if (fid2 == -1)
-                t1 = strrep(filetext, 'METHOD', obj.method);
-                t2 = strrep(t1,'BASIS',obj.basisSet);
+                for i=1:length(obj.params)
+                    filetext = strrep(filetext, obj.controller.paramNames{i}, obj.params{i});
+                end 
 
                 fid1 = fopen(gjf_file,'w');
-                fwrite(fid1, t2, 'char');
+                fwrite(fid1, filetext, 'char');
                 fclose(fid1);
 
                 disp(['about to do: ',g09exe,' ',gjf_file]);

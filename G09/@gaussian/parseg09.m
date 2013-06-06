@@ -2,10 +2,10 @@ function parseg09(obj)
 
 % Will have findText() issue errors for us as appropriate
 issueErrors = true;
-fch_file = [obj.dataPath, obj.filename, '.fch'];
+fch_file = [obj.controller.dataPath, obj.filename, '.fch'];
 fid1 = fopen(fch_file,'r');
 if fid1 == -1
-   fch_file = [obj.dataPath, obj.filename, '.fchk'];
+   fch_file = [obj.controller.dataPath, obj.filename, '.fchk'];
    fid1 = fopen(fch_file,'r');
    if fid1 == -1
       disp( '  Missing formated checkpoint file' );
@@ -253,7 +253,7 @@ end
 
 
 try
-    log_file = [obj.dataPath, obj.filename, '.log'];
+    log_file = [obj.controller.dataPath, obj.filename, '.log'];
     fid1 = fopen(log_file,'r');
 
     t1 = textscan(fid1,'%s');
