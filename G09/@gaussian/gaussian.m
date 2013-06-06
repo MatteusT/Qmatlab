@@ -43,7 +43,7 @@ classdef gaussian < handle
             g09exe = 'C:\G09W\g09.exe';
             gaussianPath = 'C:\G09W';
 
-            template = [obj.dataPath,obj.jobName,'.gjf'];
+            template = [obj.dataPath,obj.jobName,'.tpl'];
             filetext = fileread(template);
 
             log_file = [obj.dataPath,obj.filename,'.log'];

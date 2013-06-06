@@ -1,1 +1,5 @@
 *.asv
+testdat/*.gjf
+testdat/*.log
+testdat/*.chk
+testdat/*.fch*

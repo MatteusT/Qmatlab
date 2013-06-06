@@ -2,12 +2,11 @@
 %nosave
 %chk=temp.chk
 # METHOD/BASIS
-nosymm int=noraff iop(99/6=1) scf=conventional  symm=noint
 
 title
 
 0 1
- H              
+ H
  H                  1            B1
 
    B1             0.60000000
