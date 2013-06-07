@@ -62,7 +62,7 @@ classdef gaussian < handle
                 fwrite(fid1, filetext, 'char');
                 fclose(fid1);
 
-                disp(['about to do: ',g09exe,' ',gjf_file]);
+                disp(['about to do: ',g09exe,' ',gjf_file,' ',log_file]);
                 setenv('GAUSS_EXEDIR',gaussianPath);
 
                 resp1 = 1; resp2 = 1;
