@@ -86,6 +86,24 @@ for i = 1:length(mols)
             line(dottedpoints(j,:), [e1 e2], 'LineStyle', ':', 'color', [0 0 0]);
         end
     end
+    
+    figure;
+    for j=1:size(m.rcart,2)
+        for k=1:size(m.rcart,2)
+            xs = m.rcart(1,[j k]);
+            ys = m.rcart(2,[j k]);
+            dist = norm([xs(1)-xs(2), ys(1)-ys(2)]);
+            if (dist - 2) < 0
+                plot(xs, ys, 'Color', [0, 0, 0]);
+                hold on;
+            end
+        end
+    end
+    
+    for j=1:size(m.rcart,2)
+        drawCircle(m.rcart(1,j), m.rcart(2,j), (2*rand(1)-1)*.5);
+        hold on;
+    end
 end
 
 cd(qmatlab);
