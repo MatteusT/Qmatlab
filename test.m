@@ -1,5 +1,6 @@
 %clear classes
-%
+% This is a test of running just one molecule
+
 qmatlab = pwd;
 cd(fullfile(qmatlab, '\G09'));
 params =  {                             ...
