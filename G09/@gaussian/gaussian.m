@@ -35,7 +35,7 @@ classdef gaussian < handle
            
            obj.filename = obj.template;
            for i=1:size(obj.params,1)
-               obj.params{i,2} = num2str(obj.params{i,2});
+               obj.params{i,2} = num2str(obj.params{i,2}, '%.1f');
                if obj.params{i,3}
                    obj.filename = [obj.filename, '_', obj.params{i,2}];
                end 

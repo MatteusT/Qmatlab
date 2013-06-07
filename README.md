@@ -84,3 +84,8 @@ This would create/run 114 (2\*3\*19) hydrogen molecules with all of the combinat
     {'B3LYP' '6-31G', 1.8}
     {'B3LYP' '6-31G', 2}
 
+
+Notes
+-----
+
+There is a problem with the difference in the way that Gaussian and Matlab interpret types, so if you are making using a parameter that uses integers it might not work.
