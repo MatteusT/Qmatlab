@@ -1,5 +1,5 @@
 qmatlab = pwd;
-cd([qmatlab, '\G09']);
+
 path = 'C:\Users\ccollins\Desktop\start\ordered\';
 
 mols = {'1A', '1B', '1C', '2A', '2B', '2C'};
@@ -116,5 +116,3 @@ for i = 1:length(mols)
         hold on;
     end
 end
-
-cd(qmatlab);

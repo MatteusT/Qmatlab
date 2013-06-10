@@ -4,7 +4,6 @@
 % hydrogen based on the bond length.
 
 qmatlab = pwd;
-cd(fullfile(qmatlab, '\G09'));
 
 range = [.5:.1:2.5];
 params =  {                             ...
@@ -22,5 +21,3 @@ for i=1:length(c.outputs)
 end
 
 plot(range,e);
-
-cd(qmatlab);
