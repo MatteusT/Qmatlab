@@ -3,3 +3,7 @@ testdat/*.gjf
 testdat/*.log
 testdat/*.chk
 testdat/*.fch*
+testdat/*.arc
+testdat/*.out
+testdat/*.vis
+testdat/*.dat

@@ -12,13 +12,15 @@ c.runAll();
 
 cd(qmatlab);
 %% Ampac Test
-Am = Ampac;
-Am.dataPath = 'C:\Users\Matteus\Qmatlab\testdat\';
-Am.jobName = 'ch4';
-Am.method = 'sam1';
-Am.par = [1.000 1.200];
+qmatlab = pwd;
 
-Am.runAmpac()
+params =  {                             ...
+    {'METHOD', {'sam1'}, 1}, ...
+    {'PAR1', 1.0000, 1}, ...
+    {'PAR2', 1.2000, 1}, ...
+};
+c = controller(fullfile(qmatlab, 'testdat\'), 'ch4', params, @Ampac);
+c.runAll()
 
 %% INDO Test
 In = Indo;

@@ -1,6 +1,6 @@
-function parseAmpac(obj,fileprefix)
+function parse(obj)
 
-arcfile = ([fileprefix,'.arc']);
+arcfile = ([obj.dataPath, obj.filename, '.arc']);
 fid1 = fopen(arcfile,'r');
 t1 = textscan(fid1,'%s');
 fclose(fid1);
@@ -14,7 +14,7 @@ end
 obj.Hf = str2num(text{Hf+2});
 
 % Parse the out file
-outfile = ([fileprefix,'.out']);
+outfile = ([obj.dataPath, obj.filename, '.out']);
 fid1 = fopen(outfile,'r');
 t1 = textscan(fid1,'%s');
 fclose(fid1);

@@ -1,13 +1,8 @@
-classdef Ampac < handle
+classdef Ampac < Base
     %AMPAC Summary of this class goes here
     %   Detailed explanation goes here
     
     properties
-        method      % Method which you want to use
-        dataPath    % Datapath where the input and the output files go
-        jobName     % Name of Job you want to run
-        npar        % number of additional parameters (max 4)
-        par         % value of each parameter
         Hf          % Total Energy (same as Hf if method = HF)
         rho         % Atom number
         natom       % number of atoms
@@ -17,45 +12,33 @@ classdef Ampac < handle
     end
     
     methods
-        function runAmpac(obj)
-            setPars(obj);
-            template = [obj.dataPath,obj.jobName,'.dat'];
-            filetext = fileread(template);
-            fileprefix = [obj.dataPath,obj.jobName,'_',obj.method];
-            disp(fileprefix);
-            arcfile = [fileprefix,'.arc'];
-            fid2 = fopen(arcfile,'r');
-            if (fid2 == -1)
-                t1 = strrep(filetext,'METHOD', obj.method);
-                if obj.npar ~= 0
-                    tpar= t1;
-                    for ipar = 1:obj.npar
-                        tpar = strrep(tpar, ['PAR',num2str(ipar)], num2str(obj.par(ipar)));
-                    end
-                    tf = tpar;
-                else
-                    tf= t1;
-                end
-                datFile = [fileprefix,'.dat'];
-                fid1 = fopen(datFile,'w');
-                fwrite(fid1, tf, 'char');
-                fclose(fid1);
-                ampacexe ='"C:\Program Files (x86)\Semichem, Inc\Ampac-9.2\ampac.exe"';
-                disp(['about to do: ',ampacexe,' ',datFile]);
-                [status, result] = system([ampacexe,' ',datFile]);
-                disp('ok');
-            end
-            parseAmpac(obj,fileprefix);
-            fclose('all')
+        function obj = Ampac(dataPath, template, params)
+            obj = obj@Base(dataPath, template, params);
         end
-        function setPars(obj)
-            text = fileread([obj.dataPath,obj.jobName,'.dat']);
-            parmnr = strfind(text,'PAR');
-            obj.npar = length(parmnr);  
-            if obj.npar ~= length(obj.par)
-                error('The amount of parameteres are not matching')
-            end
+        function run(obj)
+            ampacexe ='"C:\Program Files (x86)\Semichem, Inc\Ampac-9.2\ampac.exe"';
             
+            tpl_file = [obj.dataPath, obj.template,'.tpl'];
+            filetext = fileread(tpl_file);
+
+            arc_file = [obj.dataPath, obj.filename, '.arc'];
+            dat_file = [obj.dataPath, obj.filename, '.dat'];
+
+            fid2 = fopen(arc_file,'r');
+            if (fid2 == -1)
+                for i=1:size(obj.params,1)
+                    filetext = strrep(filetext, obj.params{i,1}, obj.params{i,2});
+                end
+                
+                fid1 = fopen(dat_file,'w');
+                fwrite(fid1, filetext, 'char');
+                fclose(fid1);
+                
+                disp(['about to do: ',ampacexe,' ',dat_file]);
+                [status, result] = system([ampacexe,' ',dat_file]);
+            end
+            parse(obj);
+            fclose('all');
         end
     end
     
