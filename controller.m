@@ -6,12 +6,15 @@ classdef controller < handle
         inname
         iterations
         outputs
+        program
     end
     methods
-        function obj = controller(datapath, template, params)
+        function obj = controller(datapath, template, params, program)
             obj.dataPath = datapath;
             obj.template = template;
             obj.paramNames = cell(1,size(params,2));
+            obj.program = program;
+            
             temp = cell(1,size(params,2));
             for i=1:size(params,2)
                 obj.paramNames{1,i} = params{i}{1};
@@ -32,10 +35,10 @@ classdef controller < handle
                         tparam{j,2} = obj.iterations{i}{j};
                         tparam{j,3} = obj.inname(j);
                     end
-                    obj.outputs{i} = Gaussian(obj.dataPath, obj.template, tparam);
+                    obj.outputs{i} = obj.program(obj.dataPath, obj.template, tparam);
                 end
             else
-               obj.outputs{1} = Gaussian(obj, {});
+               obj.outputs{1} = obj.program(obj, {});
             end
         end
 
