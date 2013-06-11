@@ -22,7 +22,7 @@ classdef controller < handle
                     obj.inname(i) = 0;
                 end
             end
-            
+
             if length(temp) ~= 0
                 obj.iterations = obj.cartesianProduct(temp);
                 for i=1:length(obj.iterations)
@@ -32,10 +32,10 @@ classdef controller < handle
                         tparam{j,2} = obj.iterations{i}{j};
                         tparam{j,3} = obj.inname(j);
                     end
-                    obj.outputs{i} = gaussian(obj.dataPath, obj.template, tparam);
+                    obj.outputs{i} = Gaussian(obj.dataPath, obj.template, tparam);
                 end
             else
-               obj.outputs{1} = gaussian(obj, {});
+               obj.outputs{1} = Gaussian(obj, {});
             end
         end
 
@@ -56,7 +56,7 @@ classdef controller < handle
                 out = obj.cartesianProduct({remaining{1,2:end}}, out);
             end
         end
-        
+
         function runAll(obj)
             for i=1:size(obj.outputs, 2)
                 obj.outputs{i}.runGaussian();

@@ -8,9 +8,9 @@ All of the automation of running Gaussian is facilitated by the controller class
 
     controller(PATH_TO_TEMPLATE, TEMPLATE_NAME_WITHOUT_EXTENSION, PARAMETERS)
 
-Upon initialization the controller class creates all of the gaussian objects that will be iterated over. The objects are not run through Gaussian at this time to allow for just parsing files.
+Upon initialization the controller class creates all of the Gaussian objects that will be iterated over. The objects are not run through Gaussian at this time to allow for just parsing files.
 
-All of the gaussian objects are stored in the `controller.outputs` cell array.
+All of the Gaussian objects are stored in the `controller.outputs` cell array.
 
 
 Templates

@@ -2,17 +2,17 @@ qmatlab = pwd;
 
 path = 'C:\Users\ccollins\Desktop\start\ordered\';
 
-mols = {'1A', '1B', '1C', '2A', '2B', '2C'};
+mols = {'1A'};%S, '1B', '1C', '2A', '2B', '2C'};
 frags = cell(length(mols), 3);
 
 for i = 1:length(mols)
     disp(mols{i});
 %%  Parse
-    f1 = gaussian(path, mols{i}(1),{});
+    f1 = Gaussian(path, mols{i}(1),{});
     f1.parseg09();
-    m = gaussian(path, mols{i},{});
+    m = Gaussian(path, mols{i},{});
     m.parseg09();
-    f2 = gaussian(path, mols{i}(2),{});
+    f2 = Gaussian(path, mols{i}(2),{});
     f2.parseg09();
 
     disp([all(f1.Z(1:end-1)==m.Z(1:length(f1.Z)-1)), ...
@@ -64,7 +64,7 @@ for i = 1:length(mols)
     end
 
     Eorbs = {t1(t1>-7), t2(t2>-7), t3(t3>-7)};
-    
+
     % draw levels
     for j=1:length(Eorbs)
         p = points(j,:);
@@ -86,7 +86,7 @@ for i = 1:length(mols)
             line(dottedpoints(j,:), [e1 e2], 'LineStyle', ':', 'color', [0 0 0]);
         end
     end
-    
+
     figure;
     for j=1:size(m.rcart,2)
         for k=1:size(m.rcart,2)
@@ -99,9 +99,9 @@ for i = 1:length(mols)
             end
         end
     end
-    
+
     mo = m.Nelectrons/2;
-    
+
     for j=1:size(m.rcart,2)
         a1 = m.orb((m.atom == j) & (m.type == 1) & (m.subtype == 3) , mo);
         if length(a1) == 0

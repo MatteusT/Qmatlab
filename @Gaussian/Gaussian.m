@@ -1,4 +1,4 @@
-classdef gaussian < handle
+classdef Gaussian < handle
     %GAUSSIAN Summary of this class goes here
     %   Detailed explanation goes here
 
@@ -6,7 +6,7 @@ classdef gaussian < handle
         dataPath
         template
         params
-        
+
         method      % Method which you want to use
         basisSet    % Basis that you want to use
         Ehf         % Hartree Fock Energy
@@ -28,17 +28,17 @@ classdef gaussian < handle
         subtype
     end
     methods
-        function obj = gaussian(dataPath, template, params)
+        function obj = Gaussian(dataPath, template, params)
            obj.dataPath = dataPath;
            obj.template = template;
            obj.params = params;
-           
+
            obj.filename = obj.template;
            for i=1:size(obj.params,1)
                obj.params{i,2} = num2str(obj.params{i,2}, '%.1f');
                if obj.params{i,3}
                    obj.filename = [obj.filename, '_', obj.params{i,2}];
-               end 
+               end
            end
         end
         function runGaussian(obj)
@@ -51,12 +51,12 @@ classdef gaussian < handle
             log_file = [obj.dataPath, obj.filename, '.log'];
             gjf_file = [obj.dataPath, obj.filename, '.gjf'];
             fch_file = [obj.dataPath, obj.filename, '.fch'];
-            
+
             fid2 = fopen(log_file,'r');
             if (fid2 == -1)
                 for i=1:size(obj.params,1)
                     filetext = strrep(filetext, obj.params{i,1}, obj.params{i,2});
-                end 
+                end
 
                 fid1 = fopen(gjf_file,'w');
                 fwrite(fid1, filetext, 'char');
