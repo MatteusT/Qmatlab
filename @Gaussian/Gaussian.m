@@ -1,14 +1,8 @@
-classdef Gaussian < handle
+classdef Gaussian < Base
     %GAUSSIAN Summary of this class goes here
     %   Detailed explanation goes here
 
     properties
-        dataPath
-        template
-        params
-
-        method      % Method which you want to use
-        basisSet    % Basis that you want to use
         Ehf         % Hartree Fock Energy
         Etot        % Total Energy (same as Hf if method = HF)
         mulliken    % Mulliken charges for atoms
@@ -17,7 +11,6 @@ classdef Gaussian < handle
         Eorb        % Orbital Energies
         rcart       % cartesian coordinates
         dipole      % Dipole
-        filename    % Name of the file without the extension
         densities   % SCF densities
         Nelectrons
         orb
@@ -29,19 +22,9 @@ classdef Gaussian < handle
     end
     methods
         function obj = Gaussian(dataPath, template, params)
-           obj.dataPath = dataPath;
-           obj.template = template;
-           obj.params = params;
-
-           obj.filename = obj.template;
-           for i=1:size(obj.params,1)
-               obj.params{i,2} = num2str(obj.params{i,2}, '%.1f');
-               if obj.params{i,3}
-                   obj.filename = [obj.filename, '_', obj.params{i,2}];
-               end
-           end
+           obj = obj@Base(dataPath, template, params);
         end
-        function runGaussian(obj)
+        function run(obj)
             g09exe = 'C:\G09W\g09.exe';
             gaussianPath = 'C:\G09W';
 
@@ -82,7 +65,7 @@ classdef Gaussian < handle
                     end
                 end
             end
-            parseg09(obj);
+            parse(obj);
             delete('temp.chk', 'fort.*');
             fclose('all');
         end

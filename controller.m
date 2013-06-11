@@ -59,7 +59,7 @@ classdef controller < handle
 
         function runAll(obj)
             for i=1:size(obj.outputs, 2)
-                obj.outputs{i}.runGaussian();
+                obj.outputs{i}.run();
             end
         end
     end

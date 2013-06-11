@@ -2,6 +2,48 @@ Qmatlab
 =======
 A library for running and parsing Gaussian output from Matlab.
 
+Automation API
+--------------
+
+
+All of the specifc programs that are automated inherit from the `Base` class. This class defines the common API.
+
+The `Base` class has a minimal implementation with just three properties and two methods. Each subclass from this should implement both of these methods.
+
+    Base
+        properties
+            dataPath % the path in which the template resides
+            template % the name of the template without a file extension
+            params   % a cell array of parameter names and their corresponding values to replace them with.
+            filename % the name of the file with all the parameters added to it without any file extensions or path
+        end
+        methods
+            Base(dataPath, template, params) % creates the Base object
+            run(obj) % handles all of the running of the respective program
+            parse(obj) % takes the output from run and parses it
+        end
+
+As a minimum, a new program can be added based on the following template.
+
+    classdef Name < Base
+        properties
+            % some parsed properties
+        end
+        methods
+            function obj = Name(dataPath, template, params)
+               obj = obj@Base(dataPath, template, params);
+               % anything else for the constructor
+            end
+            function run(obj)
+                % what it needs run
+            end
+            function parse(obj)
+                % some parsing code
+            end
+        end
+    end
+
+
 Automating Gaussian
 -------------------
 All of the automation of running Gaussian is facilitated by the controller class.

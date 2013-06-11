@@ -9,11 +9,11 @@ for i = 1:length(mols)
     disp(mols{i});
 %%  Parse
     f1 = Gaussian(path, mols{i}(1),{});
-    f1.parseg09();
+    f1.parse();
     m = Gaussian(path, mols{i},{});
-    m.parseg09();
+    m.parse();
     f2 = Gaussian(path, mols{i}(2),{});
-    f2.parseg09();
+    f2.parse();
 
     disp([all(f1.Z(1:end-1)==m.Z(1:length(f1.Z)-1)), ...
           all(m.Z(length(f1.Z):end)==f2.Z(1:end-1))]);

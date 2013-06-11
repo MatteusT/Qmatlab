@@ -1,4 +1,4 @@
-function parseg09(obj)
+function parse(obj)
 
 % Will have findText() issue errors for us as appropriate
 issueErrors = true;
