@@ -35,14 +35,14 @@ for i = 1:length(mols)
     orb2(r2 + start,:) = f2.orb(r2,:);
 
     % temp1(fragMO,fullMO)
-    temp1 = orb1' * m.overlap * m.orb;
-    temp2 = orb2' * m.overlap * m.orb;
+    temp1 = (orb1' * m.overlap * m.orb).^2;
+    temp2 = (orb2' * m.overlap * m.orb).^2;
 
     frags{i}{1} = f1;
     frags{i}{2} = m;
     frags{i}{3} = f2;
-    frags{i,2} = temp1.^2;
-    frags{i,3} = temp2.^2;
+    frags{i,2} = temp1;
+    frags{i,3} = temp2;
 
 %%  Draw
     figure;
@@ -63,7 +63,7 @@ for i = 1:length(mols)
         text(x, Eorbs{j}(homo+1), 'LUMO', 'horizontalalignment', 'center');
     end
 
-    Eorbs = {t1(t1>-7), t2(t2>-7), t3(t3>-7)};
+    %Eorbs = {t1(t1>-4), t2(t2>-4), t3(t3>-4)};
 
     % draw levels
     for j=1:length(Eorbs)
@@ -78,15 +78,29 @@ for i = 1:length(mols)
     dx = 0.0;
     dottedpoints = [points(1,2)+dx points(2,1)-dx;
                     points(2,2)+dx points(3,1)-dx];
-
-    for j=1:2
-        for k=1:length(Eorbs{3})
-            e1 = Eorbs{j}(k);
-            e2 = Eorbs{j+1}(k);
-            line(dottedpoints(j,:), [e1 e2], 'LineStyle', ':', 'color', [0 0 0]);
+    threshold = .25;
+    
+    for j = 1:length(Eorbs{1})
+        for k = 1:length(Eorbs{2})
+            if temp1(j,k)>threshold
+                e1 = Eorbs{1}(j);
+                e2 = Eorbs{2}(k);
+                line(dottedpoints(1,:), [e1 e2], 'LineStyle', ':', 'color', [0 0 0]);
+            end
         end
     end
 
+    for j = 1:length(Eorbs{3})
+        for k = 1:length(Eorbs{2})
+            if temp2(j,k)>threshold
+                e1 = Eorbs{2}(k);
+                e2 = Eorbs{3}(j);
+                line(dottedpoints(2,:), [e1 e2], 'LineStyle', ':', 'color', [0 0 0]);
+            end
+        end
+    end
+    
+    
     figure;
     for j=1:size(m.rcart,2)
         for k=1:size(m.rcart,2)
