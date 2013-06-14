@@ -2,7 +2,7 @@ qmatlab = pwd;
 
 path = 'C:\Users\ccollins\Desktop\start\ordered\';
 
-mols = {'1A'};%S, '1B', '1C', '2A', '2B', '2C'};
+mols = {'1A', '1B', '1C', '2A', '2B', '2C'};
 frags = cell(length(mols), 3);
 
 for i = 1:length(mols)
@@ -15,8 +15,15 @@ for i = 1:length(mols)
     f2 = Gaussian(path, mols{i}(2),{});
     f2.parse();
 
-    disp([all(f1.Z(1:end-1)==m.Z(1:length(f1.Z)-1)), ...
-          all(m.Z(length(f1.Z):end)==f2.Z(1:end-1))]);
+    t = [all(f1.Z(1:end-1)==m.Z(1:length(f1.Z)-1)), ...
+          all(m.Z(length(f1.Z):end)==f2.Z(1:end-1))];
+    if ~all(t)
+        disp('INVALID FRAGMENTS!')
+        disp(mols{i});
+        disp(t);
+        disp('Skipping');
+        continue
+    end
 
 %%  Calculate
     r1 = find(f1.atom ~= f1.atom(end));
