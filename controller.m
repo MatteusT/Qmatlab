@@ -1,12 +1,12 @@
 classdef controller < handle
     properties
-        dataPath
-        template
-        paramNames
-        inname
-        iterations
-        outputs
-        program
+        dataPath    % The path to the directory that contains the template
+        template    % The name of the template file without the path/file ext
+        paramNames  % A cell array of all the parameters and replacement values
+        inname      % A semi-temporary cell array that stores bool values of whether or not a value is added to the name
+        iterations  % A cell array with a listing of all the parameter combinations
+        outputs     % A cell array with all the program instances
+        program     % A pointer to the program/class to use
     end
     methods
         function obj = controller(datapath, template, params, program)
@@ -15,6 +15,7 @@ classdef controller < handle
             obj.paramNames = cell(1,size(params,2));
             obj.program = program;
             
+            % separate the paramNames, params, and inname values
             temp = cell(1,size(params,2));
             for i=1:size(params,2)
                 obj.paramNames{1,i} = params{i}{1};
@@ -28,6 +29,9 @@ classdef controller < handle
 
             if length(temp) ~= 0
                 obj.iterations = obj.cartesianProduct(temp);
+                % go through all the iterations and pair the parameters
+                % with their respective paramName to then feed to the
+                % program
                 for i=1:length(obj.iterations)
                     tparam = cell(length(obj.paramNames),3);
                     for j=1:length(obj.paramNames)
@@ -43,7 +47,9 @@ classdef controller < handle
         end
 
         function out = cartesianProduct(obj, remaining, varargin)
-            % in = {{{a}, {b}}, {{c}, {d}}}
+            % This method does a simple cartesian product of a cell array
+            % that is used as input.
+            % cartesianProduct({{{a}, {b}}, {{c}, {d}}})
             % out = {{a, c}, {a, d}, {b, c}, {b, d}}
             out = {};
             if length(varargin) == 0
