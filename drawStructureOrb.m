@@ -12,15 +12,22 @@ function drawStructureOrb(m, orbital, offset, scale)
     % draw structure
     for j=1:size(m.rcart,2)
         for k=j+1:size(m.rcart,2)
-            if j == k 
-                continue
+            if any(m.Z([j k]) == 1)
+                limit = 1.15;
+            else
+                if any(m.Z([j k]) > 6)
+                    limit = 2;
+                else
+                    limit = 1.5;
+                end
             end
-            xs = posx([j k]) * scale;
-            ys = posy([j k]) * scale;
-
-            dist = norm([xs(1)-xs(2), ys(1)-ys(2)]);
-            if (dist - scale*3.3/normed) < 0
+            dx = m.rcart(1,j) - m.rcart(1,k);
+            dy = m.rcart(2,j) - m.rcart(2,k);
+            dist = norm([dx, dy]);
+            if (dist - limit) < 0
                 hold on;
+                xs = posx([j k]) * scale;
+                ys = posy([j k]) * scale;
                 plot(xs+offset, ys+e, 'Color', [0, 0, 0]);
                 hold on;
             end
@@ -32,10 +39,6 @@ function drawStructureOrb(m, orbital, offset, scale)
         a1 = m.orb((m.atom == j) & (m.type == 1) & (m.subtype == 3) , orbital);
         if length(a1) == 0
             continue
-        end
-        if ~all(sign(a1)==sign(a1(1)))
-            disp(a1);
-            disp(j);
         end
         r = sign(sum(a1)) * norm(a1) * 10*scale;
         x = posx(j)*scale;
