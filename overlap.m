@@ -103,53 +103,24 @@ for i = 1:length(mols)
     scale = .075;
     xoffset = [-.75 .5 -.5 .75];
     center = mean(points(2,:));
-    maxx = max(m.rcart(1,:));
-    maxy = max(m.rcart(2,:));
-    minx = min(m.rcart(1,:));
-    miny = min(m.rcart(2,:));
-    aspect = (maxx - minx)/(maxy - miny);
-    normed = norm([maxx maxy]);
-    posx = ((m.rcart(1,:)-minx)/maxx)-1;
-    posy = (((m.rcart(2,:)-miny)/maxy)-1)/aspect;
     homo = m.Nelectrons/2;
     
     for loop = -1:2
-        e = m.Eorb(homo+loop);
-        offset = xoffset(loop+2);
-        
-        % draw structure
-        for j=1:size(m.rcart,2)
-            for k=1:size(m.rcart,2)
-                if j == k 
-                    continue
-                end
-                xs = posx([j k]) * scale;
-                ys = posy([j k]) * scale;
+        offset = center+xoffset(loop+2);
+        drawStructureOrb(m, homo+loop, offset, scale);
+    end
+    
+    homo = f1.Nelectrons/2;
+    center = mean(points(1,:));
+    for loop = 0:1
+       offset = center+.5;
+       drawStructureOrb(f1, homo+loop, offset, scale);
+    end
 
-                dist = norm([xs(1)-xs(2), ys(1)-ys(2)]);
-                if (dist - scale*4/normed) < 0
-                    hold on;
-                    plot(xs+center+offset, ys+e, 'Color', [0, 0, 0]);
-                    hold on;
-                end
-            end
-        end
-        
-        % draw magnitide of coeffs
-        for j=1:size(m.rcart,2)
-            a1 = m.orb((m.atom == j) & (m.type == 1) & (m.subtype == 3) , homo+loop);
-            if length(a1) == 0
-                continue
-            end
-            if ~all(sign(a1)==sign(a1(1)))
-                disp(a1);
-                disp(j);
-            end
-            r = sign(sum(a1)) * norm(a1) * 10*scale;
-            x = posx(j)*scale;
-            y = posy(j)*scale;
-            drawCircle(x+center+offset, y+e, r*scale);
-            hold on;
-        end
+    homo = f2.Nelectrons/2;
+    center = mean(points(3,:));
+    for loop = 0:1
+       offset = center-.5;
+       drawStructureOrb(f2, homo+loop, offset, scale);
     end
 end
