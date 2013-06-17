@@ -13,11 +13,10 @@ cd(qmatlab);
 %% Ampac Test
 qmatlab = pwd;
 
-params =  {                             ...
-    {'METHOD', {'sam1'}, 1}, ...
-    {'PAR1', 1.0000, 1}, ...
-    {'PAR2', 1.2000, 1}, ...
-};
+params.METHOD = {{'sam1'}, 1};
+params.PAR1 = {{1.0000}, 1};
+params.PAR2 = {{1.2000}, 1};
+
 c = controller(fullfile(qmatlab, 'testdat\'), 'ch4', params, @Ampac);
 c.runAll()
 
