@@ -17,7 +17,7 @@ classdef Base < handle
 
            obj.filename = obj.template;
            f = fieldnames(obj.params);
-           for i=length(f)
+           for i=1:length(f)
                x = f{i};
                obj.params.(x){1} = num2str(obj.params.(x){1}, '%.1f');
                if obj.params.(x){2}

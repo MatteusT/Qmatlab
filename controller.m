@@ -21,7 +21,7 @@ classdef controller < handle
             for i=1:size(obj.paramNames)
                 x = obj.paramNames{i};
                 temp{1,i} = num2cell(params.(x){1});
-                if length(params.(x)) > 2
+                if length(params.(x)) > 1
                     obj.inname(i) = params.(x){2};
                 else
                     obj.inname(i) = 0;
