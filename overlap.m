@@ -112,22 +112,19 @@ for i = 1:length(mols)
     center = mean(points(2,:));
     homo = m.Nelectrons/2;
     
-    for loop = -1:2
-        offset = center+xoffset(loop+2);
-        drawStructureOrb(m, homo+loop, offset, scale);
+    % draw structures and orb magnitudes
+    for j = -1:2
+        offset = center+xoffset(j+2);
+        drawStructureOrb(m, homo+j, offset, scale);
     end
     
-    homo = f1.Nelectrons/2;
-    center = mean(points(1,:));
-    for loop = 0:1
-       offset = center+.5;
-       drawStructureOrb(f1, homo+loop, offset, scale);
-    end
-
-    homo = f2.Nelectrons/2;
-    center = mean(points(3,:));
-    for loop = 0:1
-       offset = center-.5;
-       drawStructureOrb(f2, homo+loop, offset, scale);
+    values = {'left', f1, 1; 'right', f2, -1};
+    for j = 1:size(values,1)
+        homo = values{j,2}.Nelectrons/2;
+        center = mean(points(2-values{j,3},:));
+        for k = 0:1
+            offset = center+.5*values{j,3};
+            drawStructureOrb(f1, homo+k, offset, scale);
+        end
     end
 end
