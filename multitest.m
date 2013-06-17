@@ -6,11 +6,10 @@
 qmatlab = pwd;
 
 range = [.5:.1:2.5];
-params =  {                             ...
-    {'METHOD', {'mp2'}, 1}, ...
-    {'BASIS', {'STO-3G', '6-21G', '6-31G'}, 1}, ...
-    {'BONDLEN', range, 1}, ...
-};
+params.METHOD = {{'mp2'}, 1};
+params.BASIS = {{'STO-3G', '6-21G', '6-31G'}, 1};
+params.BONDLEN = {range, 1};
+
 c = controller(fullfile(qmatlab, 'testdat\'), 'h2-2', params, @Gaussian);
 c.runAll();
 
