@@ -37,8 +37,10 @@ classdef Gaussian < Base
 
             fid2 = fopen(log_file,'r');
             if (fid2 == -1)
-                for i=1:size(obj.params,1)
-                    filetext = strrep(filetext, obj.params{i,1}, obj.params{i,2});
+                f = fieldnames(obj.params);
+                for i=1:length(f)
+                    x = f{i};
+                    filetext = strrep(filetext, x, obj.params.(x){1});
                 end
 
                 fid1 = fopen(gjf_file,'w');

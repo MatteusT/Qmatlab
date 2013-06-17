@@ -16,10 +16,12 @@ classdef Base < handle
            obj.params = params;
 
            obj.filename = obj.template;
-           for i=1:size(obj.params,1)
-               obj.params{i,2} = num2str(obj.params{i,2}, '%.1f');
-               if obj.params{i,3}
-                   obj.filename = [obj.filename, '_', obj.params{i,2}];
+           f = fieldnames(obj.params);
+           for i=length(f)
+               x = f{i};
+               obj.params.(x){1} = num2str(obj.params.(x){1}, '%.1f');
+               if obj.params.(x){2}
+                   obj.filename = [obj.filename, '_', obj.params.(x){1}];
                end
            end 
         end

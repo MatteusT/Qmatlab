@@ -3,10 +3,9 @@
 
 qmatlab = pwd;
 
-params =  {                             ...
-    {'METHOD', {'mp2'}, 1}, ...
-    {'BASIS', {'6-21G'}, 1}, ...
-};
+params.METHOD = {{'mp2'}, 1};
+params.BASIS = {{'6-21G'}, 1};
+
 c = controller(fullfile(qmatlab, 'testdat\'), 'h2', params, @Gaussian);
 c.runAll();
 
