@@ -2,16 +2,18 @@
 clear classes
 qmatlab = pwd;
 
-if (1)
+mat1 = [qmatlab, '\testdat\gstart.mat'];
+if exist(mat1, 'file') ~= 2
     gstart = Gaussian([qmatlab, '\testdat\'],'butadiene',{});
     gstart.run();
-    save([qmatlab, '\testdat\gstart.mat']);
+    save(mat1);
 else
-    load([qmatlab, '\testdat\gstart.mat']);
+    load(mat1);
 end
 %%
 
-if (1)
+mat2 = [qmatlab, '\testdat\gtemp2.mat'];
+if exist(mat2, 'file') ~= 2
     fragList{1} = 1:5;
     fragList{2} = 6:10;
     links = [4 6];
@@ -19,9 +21,9 @@ if (1)
     keywords = 'b3lyp/sto-3g';
     obj = Decompose(gstart,fragList,links,rlinks,keywords);
     obj.initialize();
-    save([qmatlab, '\testdat\gtemp2.mat']);
+    save(mat2);
 else
-    load([qmatlab, '\testdat\gtemp2.mat']);
+    load(mat2);
 end
 
 disp(['basis size: full ',num2str(length(obj.full.atom)), ...
