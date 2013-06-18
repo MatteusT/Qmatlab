@@ -1,4 +1,4 @@
-classdef controller < handle
+classdef Controller < handle
     properties
         dataPath    % The path to the directory that contains the template
         template    % The name of the template file without the path/file ext
@@ -9,12 +9,12 @@ classdef controller < handle
         program     % A pointer to the program/class to use
     end
     methods
-        function obj = controller(datapath, template, params, program)
+        function obj = Controller(datapath, template, params, program)
             obj.dataPath = datapath;
             obj.template = template;
             obj.paramNames = cell(1,size(params,2));
             obj.program = program;
-            
+
             % separate the paramNames, params, and inname values
             temp = cell(1,size(params,2));
             for i=1:size(params,2)

@@ -44,17 +44,17 @@ As a minimum, a new program can be added based on the following template.
 
 Automating a Program
 --------------------
-All of the automation of running any program is facilitated by the `controller` class.
+All of the automation of running any program is facilitated by the `Controller` class.
 
-    controller(PATH_TO_TEMPLATE, TEMPLATE_NAME_WITHOUT_EXTENSION, PARAMETERS, @PROGRAM_CLASS_NAME)
+    Controller(PATH_TO_TEMPLATE, TEMPLATE_NAME_WITHOUT_EXTENSION, PARAMETERS, @PROGRAM_CLASS_NAME)
 
-Upon initialization the controller class creates all of the class objects that will be iterated over. The objects are not run through the program at this time to allow for just parsing files. To then run all of the files one just uses `controller.runAll()`. This calls the `run()` method of all of the objects created in the initalization step.
+Upon initialization the Controller class creates all of the class objects that will be iterated over. The objects are not run through the program at this time to allow for just parsing files. To then run all of the files one just uses `Controller.runAll()`. This calls the `run()` method of all of the objects created in the initalization step.
 
-All of the objects are stored in the `controller.outputs` cell array.
+All of the objects are stored in the `Controller.outputs` cell array.
 
 So, for example, this would run the template `h2` at `some/path` through Gaussian. After running the calculation, the energey of the molecule is extracted.
 
-    c = controller('some/path', 'h2', {}, @Gaussian);
+    c = Controller('some/path', 'h2', {}, @Gaussian);
     c.runAll();
     e = c.ouputs{1}.Ehf;
 
