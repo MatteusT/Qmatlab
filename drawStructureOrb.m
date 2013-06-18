@@ -4,8 +4,8 @@ function drawStructureOrb(m, orbital, offset, scale)
     maxx = max(m.rcart(1,:)-minx);
     maxy = max(m.rcart(2,:)-miny);
     aspect = (maxx - minx)/(maxy - miny);
-    posx = ((m.rcart(1,:)-minx)/maxx)-1;
-    posy = (((m.rcart(2,:)-miny)/maxy)-1)/aspect;
+    posx = ((m.rcart(1,:)-minx)/maxx)-.5;
+    posy = (((m.rcart(2,:)-miny)/maxy)-.5)/aspect;
     e = m.Eorb(orbital);
 
     % draw structure
