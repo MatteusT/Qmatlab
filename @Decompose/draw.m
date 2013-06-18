@@ -56,6 +56,27 @@ for ifrag = 1:2
    end
 end
 
+scale = .2;
+xoffset = [-.75 .5 -.5 .75];
+
+% draw structures and orb magnitudes
+center = mean(xp{2});
+homo = obj.full.Nelectrons/2;
+for j = -1:2
+    offset = center+xoffset(j+2);
+    drawStructureOrb(obj.full, homo+j, offset, scale);
+end
+
+values = {'left', obj.frags{1}, 1; 'right', obj.frags{2}, -1};
+for j = 1:size(values,1)
+    homo = values{j,2}.Nelectrons/2;
+    center = mean(xp{2-values{j,3}});
+    for k = 0:1
+        offset = center+.5*values{j,3};
+        drawStructureOrb(values{j,2}, homo+k, offset, scale);
+    end
+end
+
 end
 
 function res = piCharacter(m, iorb)
