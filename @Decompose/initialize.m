@@ -37,8 +37,8 @@ for ifrag = 1:2
    % frag(ao,mo)' * S(ao,ao) * full(ao,mo)
    noLink = obj.nonLink{ifrag};
    ofrag = obj.frags{ifrag}.orb(noLink,:);
-   Stemp = obj.frags{ifrag}.overlap(noLink,noLink);
-   ofull = obj.full.orb(obj.maps{ifrag},:);
+   Stemp = obj.full.overlap(obj.maps{ifrag},:);
+   ofull = obj.full.orb(:,:);
    obj.overlap{ifrag} = ofrag' * Stemp * ofull;
 end
 end
