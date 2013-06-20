@@ -2,7 +2,7 @@ function initialize(obj)
 
 % Calculation on the full molecule
 fullList = [obj.fragList{1}(:);obj.fragList{2}(:)];
-[tempdir,jobname] = writeTPL(obj,'full',fullList);
+[tempdir,jobname] = writeTPL(obj,obj.fullIn.filename,fullList);
 obj.full = Gaussian([tempdir,'\'],jobname,{});
 obj.full.run();
 % fragment calcs
@@ -16,7 +16,7 @@ rLink{1} = obj.fullIn.rcart(:,obj.links(1)) + ...
 rLink{2} = obj.fullIn.rcart(:,obj.links(2)) - ...
    obj.rlinks(2) * direction/norm(direction);
 for ifrag = 1:2
-   [tempdir,jobname] = writeTPL(obj,['frag',int2str(ifrag)], ...
+   [tempdir,jobname] = writeTPL(obj,[obj.fullIn.filename,'-',int2str(ifrag)], ...
       obj.fragList{ifrag},rLink{ifrag});
    obj.frags{ifrag} =  Gaussian([tempdir,'\'],jobname,{});
    obj.frags{ifrag}.run();
