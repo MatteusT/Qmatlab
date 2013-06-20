@@ -25,6 +25,15 @@ function drawStructureOrb(m, bounds, orbital, offset, scale)
                 hold on;
             end
         end
+        if m.Z(j) > 6
+            hold on;
+            if m.Z(j) == 16
+                color = 'y';
+            else
+                color = [1 .5 0];
+            end
+            rectangle('Position',[posx(j)-.05,posy(j)-.05,.1,.1],'Curvature',[1,1],'FaceColor',color);
+        end
     end
 
     % draw magnitide of coeffs
