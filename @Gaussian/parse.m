@@ -287,5 +287,35 @@ try
           loc = loc + k + 1;
        end
     end
+    
+    % EXCITED STATES
+    phrase = {'Excited', 'State'};
+    loc = findText(text,phrase);
+    i = 1;
+    
+    % Iterates through every instance of phrase Excited State
+    ilevel = 0;
+    for i = 1:size(loc)
+        % Make sure this the correct location of file, should ave #: here
+        if (strcmp(text{loc(i)+2}(2),':'))
+            ilevel = ilevel + 1;
+            obj.Ees(ilevel) = str2num( text{loc(i)+4} );
+            % oscillator strength f=#
+            obj.Ef(ilevel)  = str2num( text{loc(i)+8}(3:end) );
+            icurr = loc(1) + 11;
+            icomp = 0;
+            t2 = {};
+            while (strcmp(text{icurr},'->'))
+                icomp = icomp + 1;
+                t3.filled = str2num(text{icurr -1});
+                t3.empty  = str2num(text{icurr +1});
+                t3.amp    = str2num(text{icurr +2});
+                t2{icomp} = t3;
+                icurr = icurr + 4;
+            end
+            obj.Ecomp{ilevel} = t2;
+        end
+    end
+
 end
 end
