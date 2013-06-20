@@ -19,6 +19,9 @@ classdef Gaussian < Base
         atom
         type
         subtype
+        Ees
+        Ef
+        Ecomp
     end
     methods
         function obj = Gaussian(dataPath, template, params)
