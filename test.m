@@ -1,39 +1,31 @@
 %clear classes
-%% Gaussian Test
+% This is a test of running just one molecule
 
-cd('C:\Users\Matteus\Qmatlab\G09\');
-g = gaussian;
+qmatlab = pwd;
 
-g.method = 'mp2';
-g.basisSet = '6-21G';
-g.dataPath = 'C:\Users\Matteus\Qmatlab\testdat\';
-g.jobName = 'h2';
+params =  {                             ...
+    {'METHOD', {'mp2'}, 1}, ...
+    {'BASIS', {'6-21G'}, 1}, ...
+};
+c = Controller(fullfile(qmatlab, 'testdat\'), 'h2', params, @Gaussian);
+c.runAll();
 
-g.runGaussian()
-
-cd('C:\Users\Matteus\Qmatlab');
+cd(qmatlab);
 %% Ampac Test
-cd('C:\Users\Matteus\Qmatlab\Ampac\');
-Am = Ampac;
-Am.dataPath = 'C:\Users\Matteus\Qmatlab\testdat\';
-Am.jobName = 'ch4';
-Am.method = 'sam1';
-Am.par = [1.000 1.200];
+qmatlab = pwd;
 
-Am.runAmpac()
+params =  {                             ...
+    {'METHOD', {'sam1'}, 1}, ...
+    {'PAR1', 1.0000, 1}, ...
+    {'PAR2', 1.2000, 1}, ...
+};
+c = Controller(fullfile(qmatlab, 'testdat\'), 'ch4', params, @Ampac);
+c.runAll()
 
-cd('C:\Users\Matteus\Qmatlab\');
-
-%%
-
-cd('C:\Users\Matteus\Qmatlab\INDO\');
-
+%% INDO Test
 In = Indo;
 dataPath = 'C:\Users\Matteus\Qmatlab\testdat\';
 jobName = 'ch4_sam1';
 parameterFile = 'C:\Users\Matteus\Qmatlab\testdat\parameters';
 config = In.defaultConfig();
 Indo(config,dataPath,jobName,parameterFile);
-
-cd('C:\Users\Matteus\Qmatlab\');
-

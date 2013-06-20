@@ -1,0 +1,10 @@
+*.asv
+*.gjf
+*.log
+*.chk
+*.fch*
+*.arc
+*.out
+*.vis
+*.dat
+*.mat
