@@ -1,12 +1,6 @@
-function drawStructureOrb(m, orbital, offset, scale)
-    minx = min(m.rcart(1,:));
-    miny = min(m.rcart(2,:));
-    maxx = max(m.rcart(1,:)-minx);
-    maxy = max(m.rcart(2,:)-miny);
-    aspect = (maxx - minx)/(maxy - miny);
-    posx = ((m.rcart(1,:)-minx)/maxx)-.5;
-    posy = (((m.rcart(2,:)-miny)/maxy)-.5)/aspect;
-    e = m.Eorb(orbital);
+function drawStructureOrb(m, bounds, orbital, offset, scale)
+    posx = (m.rcart(1,:)-bounds.minx)-(bounds.width/2)+offset(1);
+    posy = (m.rcart(2,:)-bounds.miny)-(bounds.height/2)+offset(2);
 
     % draw structure
     for j=1:size(m.rcart,2)
@@ -27,7 +21,7 @@ function drawStructureOrb(m, orbital, offset, scale)
                 hold on;
                 xs = posx([j k]) * scale;
                 ys = posy([j k]) * scale;
-                plot(xs+offset, ys+e, 'Color', [0, 0, 0]);
+                plot(xs, ys, 'Color', [0, 0, 0]);
                 hold on;
             end
         end
@@ -42,7 +36,7 @@ function drawStructureOrb(m, orbital, offset, scale)
         r = sign(sum(a1)) * norm(a1) * scale * 2;
         x = posx(j) * scale;
         y = posy(j) * scale;
-        drawCircle(x+offset, y+e, r*scale);
+        drawCircle(x, y, r*scale);
         hold on;
     end
 end

@@ -56,24 +56,31 @@ for ifrag = 1:2
    end
 end
 
-scale = .2;
-xoffset = [-.75 .5 -.5 .75];
+scale = 1;
+sx = 1.1;
+xoffset = [-.5 .5] * sx;
+sy = 1.1;
+yoffset = [-1.5 -.5 .5 1.5] * sy;
 
+
+figure(10+figNum);
 % draw structures and orb magnitudes
-center = mean(xp{2});
+center = [0 0];
+bb = boundingBox(obj.full.rcart);
 homo = obj.full.Nelectrons/2;
 for j = -1:2
-    offset = center+xoffset(j+2);
-    drawStructureOrb(obj.full, homo+j, offset, scale);
+    center(2) = bb.height * (yoffset(j+2));
+    drawStructureOrb(obj.full, bb, homo+j, center, scale);
 end
 
-values = {'left', obj.frags{1}, 1; 'right', obj.frags{2}, -1};
+values = {'left', obj.frags{1}; 'right', obj.frags{2}};
 for j = 1:size(values,1)
     homo = values{j,2}.Nelectrons/2;
-    center = mean(xp{2-values{j,3}});
+    tbb = boundingBox(values{j,2}.rcart);
+    center = [(bb.width + tbb.width) * xoffset(j), 0];
     for k = 0:1
-        offset = center+.5*values{j,3};
-        drawStructureOrb(values{j,2}, homo+k, offset, scale);
+        center(2) = tbb.height*(yoffset(k+2));
+        drawStructureOrb(values{j,2}, tbb, homo+k, center, scale);
     end
 end
 
@@ -83,4 +90,11 @@ function res = piCharacter(m, iorb)
   % m is a guassian calc for a molecule lying in x,y plane
   a1 = m.orb((m.type == 1) & (m.subtype == 3) , iorb);
   res = sum(a1.^2);
+end
+
+function res = boundingBox(positions)
+    res.minx = min(positions(1,:));
+    res.miny = min(positions(2,:));
+    res.width = max(positions(1,:))-res.minx;
+    res.height = max(positions(2,:))-res.miny;
 end
