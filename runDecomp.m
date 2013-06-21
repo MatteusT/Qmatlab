@@ -1,4 +1,3 @@
-%% start by doing an optimization of butadiene
 qmatlab = pwd;
 
 mols = {    ...
