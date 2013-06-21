@@ -1,6 +1,6 @@
-function drawStructureOrb(m, bounds, orbital, offset, scale)
-    posx = (m.rcart(1,:)-bounds.minx)-(bounds.width/2)+offset(1);
-    posy = (m.rcart(2,:)-bounds.miny)-(bounds.height/2)+offset(2);
+function drawStructureOrb(m, orbital, offset, scale)
+    posx = m.rcart(1,:)+offset(1);
+    posy = m.rcart(2,:)+offset(2);
 
     % draw structure
     for j=1:size(m.rcart,2)
