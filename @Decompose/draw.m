@@ -70,7 +70,7 @@ homo = obj.full.Nelectrons/2;
 for j = -1:2
     center(1) = -bb.minx - (bb.width/2);
     center(2) = -bb.miny - (bb.height/2) + bb.height * (yoffset(j+2));
-    drawStructureOrb(obj.full, homo+j, center, scale);
+    obj.full.drawStructureOrb(homo+j, center, scale);
 end
 
 values = {'left', obj.frags{1}; 'right', obj.frags{2}};
@@ -80,7 +80,7 @@ for j = 1:size(values,1)
     for k = 0:1
         center(1) = -tbb.minx - (tbb.width/2) + (bb.width + tbb.width) * xoffset(j);
         center(2) = -tbb.miny - (tbb.height/2) + tbb.height * (yoffset(k+2));
-        drawStructureOrb(values{j,2}, homo+k, center, scale);
+        values{j,2}.drawStructureOrb(homo+k, center, scale);
     end
 end
 
