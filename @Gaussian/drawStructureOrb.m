@@ -32,7 +32,8 @@ function drawStructureOrb(obj, orbital, offset, scale)
             else
                 color = [1 .5 0];
             end
-            rectangle('Position',[posx(j)-.05,posy(j)-.05,.1,.1],'Curvature',[1,1],'FaceColor',color);
+            t = abs(scale)*.1;
+            rectangle('Position',[posx(j)*scale-t,posy(j)*scale-t,t*2,t*2],'Curvature',[1,1],'FaceColor',color);
         end
     end
 
