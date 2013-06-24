@@ -305,7 +305,7 @@ try
             obj.Ees(ilevel) = str2num( text{loc(i)+4} );
             % oscillator strength f=#
             obj.Ef(ilevel)  = str2num( text{loc(i)+8}(3:end) );
-            icurr = loc(1) + 11;
+            icurr = loc(i) + 11;
             icomp = 0;
             t2 = {};
             while (strcmp(text{icurr},'->'))
