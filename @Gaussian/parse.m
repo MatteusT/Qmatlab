@@ -271,6 +271,9 @@ try
        r = (i - 1) * 5;            % remove 5 rows/columns for each iteration
        if i == n                  % special case when rows left < 5
           Nleft = mod(Nenergies, 5);
+          if Nleft == 0
+              Nleft = 5;
+          end
           loc = loc + Nleft;
        else
           loc = loc + 5;           % 5 nums at top
