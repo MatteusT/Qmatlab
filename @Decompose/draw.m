@@ -58,7 +58,7 @@ end
 
 scale = 1;
 sx = 1.1;
-xoffset = [-.5 .5] * sx;
+xoffset = [-.75 .75] * sx;
 sy = 1.1;
 yoffset = [-1.5 -.5 .5 1.5] * sy;
 
@@ -71,6 +71,18 @@ for j = -1:2
     center(1) = -bb.minx - (bb.width/2);
     center(2) = -bb.miny - (bb.height/2) + bb.height * (yoffset(j+2));
     obj.full.drawStructureOrb(homo+j, center, scale);
+    
+    a = obj.full.orb(:,homo+j);
+    S = obj.full.overlap;
+    frag1 = a;
+    nOrbs1 = length(find(obj.frags{1}.atom ~= obj.links(1)));
+    frag1(nOrbs1-1:end) = 0;
+    frag2 = a;
+    frag2(1:nOrbs1+1) = 0;
+    left = frag1' * S * frag1;
+    right = frag2' * S * frag2;
+    text(center(1)-(bb.width/2), center(2), sprintf('%.2f',left), 'horizontalalignment', 'right');
+    text(center(1)+(bb.width/2), center(2), sprintf('%.2f',right), 'horizontalalignment', 'left');
 end
 
 values = {'left', obj.frags{1}; 'right', obj.frags{2}};
