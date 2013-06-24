@@ -1,21 +1,21 @@
-function drawStructureOrb(m, bounds, orbital, offset, scale)
-    posx = (m.rcart(1,:)-bounds.minx)-(bounds.width/2)+offset(1);
-    posy = (m.rcart(2,:)-bounds.miny)-(bounds.height/2)+offset(2);
+function drawStructureOrb(obj, orbital, offset, scale)
+    posx = obj.rcart(1,:)+offset(1);
+    posy = obj.rcart(2,:)+offset(2);
 
     % draw structure
-    for j=1:size(m.rcart,2)
-        for k=j+1:size(m.rcart,2)
-            if any(m.Z([j k]) == 1)
+    for j=1:size(obj.rcart,2)
+        for k=j+1:size(obj.rcart,2)
+            if any(obj.Z([j k]) == 1)
                 limit = 1.15;
             else
-                if any(m.Z([j k]) > 6)
+                if any(obj.Z([j k]) > 6)
                     limit = 2;
                 else
                     limit = 1.7;
                 end
             end
-            dx = m.rcart(1,j) - m.rcart(1,k);
-            dy = m.rcart(2,j) - m.rcart(2,k);
+            dx = obj.rcart(1,j) - obj.rcart(1,k);
+            dy = obj.rcart(2,j) - obj.rcart(2,k);
             dist = norm([dx, dy]);
             if (dist - limit) < 0
                 hold on;
@@ -25,20 +25,21 @@ function drawStructureOrb(m, bounds, orbital, offset, scale)
                 hold on;
             end
         end
-        if m.Z(j) > 6
+        if obj.Z(j) > 6
             hold on;
-            if m.Z(j) == 16
+            if obj.Z(j) == 16
                 color = 'y';
             else
                 color = [1 .5 0];
             end
-            rectangle('Position',[posx(j)-.05,posy(j)-.05,.1,.1],'Curvature',[1,1],'FaceColor',color);
+            t = abs(scale)*.1;
+            rectangle('Position',[posx(j)*scale-t,posy(j)*scale-t,t*2,t*2],'Curvature',[1,1],'FaceColor',color);
         end
     end
 
     % draw magnitide of coeffs
-    for j=1:size(m.rcart,2)
-        a1 = m.orb((m.atom == j) & (m.type == 1) & (m.subtype == 3) , orbital);
+    for j=1:size(obj.rcart,2)
+        a1 = obj.orb((obj.atom == j) & (obj.type == 1) & (obj.subtype == 3) , orbital);
         if length(a1) == 0
             continue
         end
