@@ -2,7 +2,7 @@ function initialize(obj)
 
 % Calculation on the full molecule
 fullList = [obj.fragList{1}(:);obj.fragList{2}(:)];
-tempdir = writeTPL(obj,obj.fullIn.filename,fullList);
+tempdir = writeTPL(obj,obj.fullIn.filename,fullList,obj.keywords);
 obj.full = Gaussian([tempdir,'\'],jobname,{});
 obj.full.run();
 % fragment calcs
@@ -17,7 +17,7 @@ rLink{2} = obj.fullIn.rcart(:,obj.links(2)) - ...
    obj.rlinks(2) * direction/norm(direction);
 for ifrag = 1:2
    tempdir = writeTPL(obj,[obj.fullIn.filename,'-',int2str(ifrag)], ...
-      obj.fragList{ifrag},rLink{ifrag});
+      obj.fragList{ifrag},obj.keywords,rLink{ifrag});
    obj.frags{ifrag} =  Gaussian([tempdir,'\'],jobname,{});
    obj.frags{ifrag}.run();
 end
@@ -44,7 +44,7 @@ end
 end
 
 
-function tempDir = writeTPL(obj,jobname,atoms,rLink)
+function tempDir = writeTPL(obj,jobname,atoms,keywords,rLink)
 newline = char(10);
 syms{1} = 'H'; syms{6} = 'C'; syms{7} = 'N'; syms{8} = 'O';
 syms{15} = 'P'; syms{16} = 'S';
@@ -53,7 +53,7 @@ tempDir = tempname(['c:\G09W','\','Scratch']);
 mkdir(tempDir);
 fid1 = fopen([tempDir,'\',gjf_file],'w');
 fwrite(fid1,['%chk=temp.chk',newline]);
-fwrite(fid1,['# ',obj.keywords,' NoSymmetry iop(3/33=4) pop=regular',newline]);
+fwrite(fid1,['# ',keywords,' NoSymmetry iop(3/33=4) pop=regular',newline]);
 fwrite(fid1,newline);
 fwrite(fid1,jobname);
 fwrite(fid1,newline);
@@ -67,7 +67,7 @@ for iatom = atoms(:)'
    end
    fwrite(fid1,newline);
 end
-if (nargin > 3)
+if (nargin > 4)
    fwrite(fid1,[' H ',num2str(rLink(:)'),newline]);
 end
 fwrite(fid1,newline);
