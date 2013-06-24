@@ -90,7 +90,7 @@ for j = 1:size(values,1)
     homo = values{j,2}.Nelectrons/2;
     tbb = boundingBox(values{j,2}.rcart);
     for k = 0:1
-        center(1) = -tbb.minx - (tbb.width/2) + (bb.width + tbb.width) * xoffset(j);
+        center(1) = -tbb.minx - (tbb.width/2) + (bb.width) * xoffset(j) + sign(xoffset(j))*tbb.width/2;
         center(2) = -tbb.miny - (tbb.height/2) + tbb.height * (yoffset(k+2));
         values{j,2}.drawStructureOrb(homo+k, center, scale);
     end
