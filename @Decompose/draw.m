@@ -96,6 +96,7 @@ for j = 1:size(values,1)
     end
 end
 
+obj.drawES(figNum);
 end
 
 function res = piCharacter(m, iorb)

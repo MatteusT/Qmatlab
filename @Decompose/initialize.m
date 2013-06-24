@@ -2,7 +2,8 @@ function initialize(obj)
 
 % Calculation on the full molecule
 fullList = [obj.fragList{1}(:);obj.fragList{2}(:)];
-tempdir = writeTPL(obj,obj.fullIn.filename,fullList,obj.keywords);
+keywords = ['td ', obj.keywords];
+tempdir = writeTPL(obj,obj.fullIn.filename,fullList,keywords);
 obj.full = Gaussian([tempdir,'\'],obj.fullIn.filename,{});
 obj.full.run();
 
