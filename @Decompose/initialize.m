@@ -4,7 +4,7 @@ function initialize(obj)
 fullList = [obj.fragList{1}(:);obj.fragList{2}(:)];
 keywords = ['td ', obj.keywords];
 tempdir = writeTPL(obj,obj.fullIn.filename,fullList,keywords);
-obj.full = Gaussian([tempdir,'\'],obj.fullIn.filename,struct);
+obj.full = Gaussian(tempdir,obj.fullIn.filename,struct);
 obj.full.run();
 
 % fragment calcs
@@ -20,7 +20,7 @@ rLink{2} = obj.fullIn.rcart(:,obj.links(2)) - ...
 for ifrag = 1:2
    name = [obj.fullIn.filename,'-',int2str(ifrag)];
    tempdir = writeTPL(obj,name,obj.fragList{ifrag},obj.keywords,rLink{ifrag});
-   obj.frags{ifrag} =  Gaussian([tempdir,'\'],name,struct);
+   obj.frags{ifrag} =  Gaussian(tempdir,name,struct);
    obj.frags{ifrag}.run();
 end
 
@@ -52,9 +52,9 @@ newline = char(10);
 syms{1} = 'H'; syms{6} = 'C'; syms{7} = 'N'; syms{8} = 'O';
 syms{15} = 'P'; syms{16} = 'S';
 tpl_file = [jobname,'.tpl'];
-tempDir = tempname(['C:\G09W','\','Scratch']);
+tempDir = [tempname('C:\G09W\Scratch'), '\'];
 mkdir(tempDir);
-fid1 = fopen([tempDir,'\',tpl_file],'w');
+fid1 = fopen([tempDir,tpl_file],'w');
 
 fwrite(fid1,['%chk=temp.chk',newline]);
 fwrite(fid1,['# ',keywords,' NoSymmetry iop(3/33=4) pop=regular',newline]);
