@@ -260,63 +260,66 @@ try
     fclose(fid1);
     text = t1{1};
 
+    try:
+        phrase = {'***','Overlap','***'};
+        loc = utils.findText(text, phrase, issueErrors);
+        obj.overlap= zeros(Nenergies,Nenergies);
+        n = ceil(Nenergies/5);
 
-    phrase = {'***','Overlap','***'};
-    loc = utils.findText(text, phrase, issueErrors);
-    obj.overlap= zeros(Nenergies,Nenergies);
-    n = ceil(Nenergies/5);
-
-    loc = loc + 3;                 % Overlap, ***
-    for i = 1:n
-       r = (i - 1) * 5;            % remove 5 rows/columns for each iteration
-       if i == n                  % special case when rows left < 5
-          Nleft = mod(Nenergies, 5);
-          if Nleft == 0
-              Nleft = 5;
-          end
-          loc = loc + Nleft;
-       else
-          loc = loc + 5;           % 5 nums at top
-       end
-       for j = 1+r:Nenergies
-          for k = 1:5
-             temp = str2num(text{loc + k});
-             obj.overlap(j, r+k) = temp;
-             obj.overlap(r+k, j) = temp;
-             if j-r == k           % first 5 rows in a set form a diag
-                break
-             end
-          end
-          loc = loc + k + 1;
-       end
+        loc = loc + 3;                 % Overlap, ***
+        for i = 1:n
+           r = (i - 1) * 5;            % remove 5 rows/columns for each iteration
+           if i == n                  % special case when rows left < 5
+              Nleft = mod(Nenergies, 5);
+              if Nleft == 0
+                  Nleft = 5;
+              end
+              loc = loc + Nleft;
+           else
+              loc = loc + 5;           % 5 nums at top
+           end
+           for j = 1+r:Nenergies
+              for k = 1:5
+                 temp = str2num(text{loc + k});
+                 obj.overlap(j, r+k) = temp;
+                 obj.overlap(r+k, j) = temp;
+                 if j-r == k           % first 5 rows in a set form a diag
+                    break
+                 end
+              end
+              loc = loc + k + 1;
+           end
+        end
     end
 
-    % EXCITED STATES
-    phrase = {'Excited', 'State'};
-    loc = utils.findText(text,phrase);
-    i = 1;
+    try
+        % EXCITED STATES
+        phrase = {'Excited', 'State'};
+        loc = utils.findText(text,phrase);
+        i = 1;
 
-    % Iterates through every instance of phrase Excited State
-    ilevel = 0;
-    for i = 1:size(loc)
-        % Make sure this the correct location of file, should ave #: here
-        if (strcmp(text{loc(i)+2}(2),':'))
-            ilevel = ilevel + 1;
-            obj.Ees(ilevel) = str2num( text{loc(i)+4} );
-            % oscillator strength f=#
-            obj.Ef(ilevel)  = str2num( text{loc(i)+8}(3:end) );
-            icurr = loc(i) + 11;
-            icomp = 0;
-            t2 = {};
-            while (strcmp(text{icurr},'->'))
-                icomp = icomp + 1;
-                t3.filled = str2num(text{icurr -1});
-                t3.empty  = str2num(text{icurr +1});
-                t3.amp    = str2num(text{icurr +2});
-                t2{icomp} = t3;
-                icurr = icurr + 4;
+        % Iterates through every instance of phrase Excited State
+        ilevel = 0;
+        for i = 1:size(loc)
+            % Make sure this the correct location of file, should ave #: here
+            if (strcmp(text{loc(i)+2}(2),':'))
+                ilevel = ilevel + 1;
+                obj.Ees(ilevel) = str2num( text{loc(i)+4} );
+                % oscillator strength f=#
+                obj.Ef(ilevel)  = str2num( text{loc(i)+8}(3:end) );
+                icurr = loc(i) + 11;
+                icomp = 0;
+                t2 = {};
+                while (strcmp(text{icurr},'->'))
+                    icomp = icomp + 1;
+                    t3.filled = str2num(text{icurr -1});
+                    t3.empty  = str2num(text{icurr +1});
+                    t3.amp    = str2num(text{icurr +2});
+                    t2{icomp} = t3;
+                    icurr = icurr + 4;
+                end
+                obj.Ecomp{ilevel} = t2;
             end
-            obj.Ecomp{ilevel} = t2;
         end
     end
 
