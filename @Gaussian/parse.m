@@ -1,6 +1,6 @@
 function parse(obj)
 
-% Will have findText() issue errors for us as appropriate
+% Will have utils.findText() issue errors for us as appropriate
 issueErrors = true;
 fch_file = [obj.dataPath, obj.filename, '.fch'];
 fid1 = fopen(fch_file,'r');
@@ -20,7 +20,7 @@ text = t1{1};
 
 % Orbital energies
 phrase = {'Alpha','Orbital','Energies'};
-loc = findText(text,phrase, issueErrors);
+loc = utils.findText(text,phrase, issueErrors);
 % The fifth word after alpha is the number of energies
 Nenergies = str2double( text{loc+5} );
 obj.Eorb = zeros(Nenergies,1);
@@ -31,13 +31,13 @@ end
 
 % Number of electrons
 phrase = {'Number','of','electrons'};
-loc = findText(text,phrase);
+loc = utils.findText(text,phrase);
 %The fourth word after number is the number of electrons
 obj.Nelectrons = str2double(text{loc + 4});
 
 % Orbital coefficients
 phrase = {'Alpha','MO','coefficients'};
-loc = findText(text,phrase);
+loc = utils.findText(text,phrase);
 % The fifth word after alpha is the number of energies
 Nvalues = str2double(text{loc+5});
 temp = zeros(Nvalues,1);
@@ -50,13 +50,13 @@ obj.orb = reshape(temp,Nenergies,Nenergies);
 
 % The hartree fock energy is after SCF Energy R
 phrase = {'SCF','Energy','R'};
-loc = findText(text,phrase);
+loc = utils.findText(text,phrase);
 
 obj.Ehf = str2double(text{loc+3});
 
 % MP2 Energy
 phrase = {'MP2','Energy','R'};
-loc = findText(text,phrase);
+loc = utils.findText(text,phrase);
 if loc == 0
     obj.MP2 = obj.Ehf;
 else
@@ -65,7 +65,7 @@ end
 
 % the atomic numbers (Z) are after 'Atomic numbers'
 phrase = {'Atomic','numbers'};
-loc = findText(text,phrase);
+loc = utils.findText(text,phrase);
 natom = str2double(text{loc+4});
 obj.Z = zeros(1,natom);
 for iatom=1:natom
@@ -74,7 +74,7 @@ end
 
 % Cartesian coordinates
 phrase = {'Current','cartesian','coordinates'};
-loc = findText(text,phrase);
+loc = utils.findText(text,phrase);
 obj.rcart = zeros(3,natom);
 icurr = loc + 6;
 for iatom=1:natom
@@ -89,7 +89,7 @@ obj.rcart = obj.rcart / 1.889726124565062;
 try
     % Dipole moment
     phrase = {'Dipole','Moment'};
-    loc = findText(text,phrase);
+    loc = utils.findText(text,phrase);
     n1 = str2double(text{loc+4});
     obj.dipole = zeros(n1,1);
     for i=1:n1
@@ -99,7 +99,7 @@ end
 
 % Mulliken charges
 phrase = {'Mulliken','Charges'};
-loc = findText(text,phrase);
+loc = utils.findText(text,phrase);
 n1 = str2double(text{loc+4});
 obj.mulliken = zeros(1,n1);
 for i=1:n1
@@ -110,7 +110,7 @@ end
 % Basis set information
 % First, read in the data as it is defined in the fchk file
 phrase = {'Shell','types'};
-loc = findText(text,phrase);
+loc = utils.findText(text,phrase);
 nshells = str2num(text{loc+4});
 obj.shellTypes = zeros(nshells,1);
 for i=1:nshells
@@ -118,7 +118,7 @@ for i=1:nshells
 end
 
 phrase = {'Number','of','primitives','per','shell'};
-loc = findText(text,phrase);
+loc = utils.findText(text,phrase);
 nshells = str2num(text{loc+7});
 primsPerShell = zeros(nshells,1);
 for i=1:nshells
@@ -126,7 +126,7 @@ for i=1:nshells
 end
 
 phrase = {'Shell','to','atom','map'};
-loc = findText(text,phrase);
+loc = utils.findText(text,phrase);
 nshells = str2num(text{loc+6});
 shellToAtom = zeros(nshells,1);
 for i=1:nshells
@@ -134,7 +134,7 @@ for i=1:nshells
 end
 
 phrase = {'Primitive','exponents'};
-loc = findText(text,phrase);
+loc = utils.findText(text,phrase);
 n1 = str2num(text{loc+4});
 primExp = zeros(n1,1);
 for i=1:n1
@@ -142,7 +142,7 @@ for i=1:n1
 end
 
 phrase = {'Contraction','coefficients'};
-loc = findText(text,phrase);
+loc = utils.findText(text,phrase);
 if (size(loc,1) > 0)
    n1 = str2num(text{loc(1)+4});
    contCoef = zeros(n1,1);
@@ -235,7 +235,7 @@ obj.type = type;
 obj.subtype = subtype;
 
 phrase = {'Total','SCF','Density'};
-loc = findText(text, phrase, issueErrors);
+loc = utils.findText(text, phrase, issueErrors);
 ndensities = str2double(text{loc + 5});
 obj.densities = zeros(Nenergies,Nenergies);
 
@@ -262,7 +262,7 @@ try
 
 
     phrase = {'***','Overlap','***'};
-    loc = findText(text, phrase, issueErrors);
+    loc = utils.findText(text, phrase, issueErrors);
     obj.overlap= zeros(Nenergies,Nenergies);
     n = ceil(Nenergies/5);
 
@@ -290,12 +290,12 @@ try
           loc = loc + k + 1;
        end
     end
-    
+
     % EXCITED STATES
     phrase = {'Excited', 'State'};
-    loc = findText(text,phrase);
+    loc = utils.findText(text,phrase);
     i = 1;
-    
+
     % Iterates through every instance of phrase Excited State
     ilevel = 0;
     for i = 1:size(loc)

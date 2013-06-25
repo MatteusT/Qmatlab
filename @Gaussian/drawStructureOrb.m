@@ -49,7 +49,7 @@ function drawStructureOrb(obj, orbital, offset, scale)
         r = sign(sum(a1)) * norm(a1) * scale * 2;
         x = posx(j) * scale;
         y = posy(j) * scale;
-        drawCircle(x, y, r*scale);
+        utils.drawCircle(x, y, r*scale);
         hold on;
     end
 end
