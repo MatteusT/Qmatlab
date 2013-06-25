@@ -1,4 +1,5 @@
 function draw(obj,piOnly,figNum)
+%%
 if (nargin < 2)
    figNum = 1;
 end
@@ -56,6 +57,12 @@ for ifrag = 1:2
    end
 end
 
+obj.drawES(figNum, abs(xp{2}(1)-xp{2}(2)), xp{2}(1));
+
+
+%%
+figure(10+figNum);
+% draw structures and orb magnitudes
 scale = 1;
 sx = 1.1;
 xoffset = [-.75 .75] * sx;
@@ -63,8 +70,6 @@ sy = 1.1;
 yoffset = [-1.5 -.5 .5 1.5] * sy;
 
 
-figure(10+figNum);
-% draw structures and orb magnitudes
 bb = boundingBox(obj.full.rcart);
 homo = obj.full.Nelectrons/2;
 for j = -1:2
@@ -96,9 +101,8 @@ for j = 1:size(values,1)
     end
 end
 
-obj.drawES(figNum);
 end
-
+%%
 function res = piCharacter(m, iorb)
   % m is a guassian calc for a molecule lying in x,y plane
   a1 = m.orb((m.type == 1) & (m.subtype == 3) , iorb);
