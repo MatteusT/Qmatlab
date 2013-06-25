@@ -15,7 +15,7 @@ function drawES(obj,figNum,width,xoffset)
             t1 = m.Ecomp{i}{ic};
             if (t1.amp.^2 > 0.2)     
                 hold on;
-                plot([x+t*spacing2 x+t*spacing2],[m.Eorb(t1.filled) m.Eorb(t1.empty)],'r-');
+                plot([x+t*spacing2 x+t*spacing2],[m.Eorb(t1.filled) m.Eorb(t1.empty)],'r-','lineWidth',10*t1.amp.^2);
                 t = t + 1;
             end
         end
