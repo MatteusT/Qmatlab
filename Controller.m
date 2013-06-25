@@ -17,11 +17,12 @@ classdef Controller < handle
 
             % separate the paramNames, params, and inname values
             temp = cell(1,size(params,2));
-            for i=1:size(params,2)
-                obj.paramNames{1,i} = params{i}{1};
-                temp{1,i} = num2cell(params{i}{2});
-                if length(params{i}) > 2
-                    obj.inname(i) = params{i}{3};
+            obj.paramNames = fieldnames(params);
+            for i=1:size(obj.paramNames)
+                x = obj.paramNames{i};
+                temp{1,i} = num2cell(params.(x){1});
+                if length(params.(x)) > 1
+                    obj.inname(i) = params.(x){2};
                 else
                     obj.inname(i) = 0;
                 end
@@ -33,11 +34,10 @@ classdef Controller < handle
                 % with their respective paramName to then feed to the
                 % program
                 for i=1:length(obj.iterations)
-                    tparam = cell(length(obj.paramNames),3);
                     for j=1:length(obj.paramNames)
-                        tparam{j,1} = obj.paramNames{j};
-                        tparam{j,2} = obj.iterations{i}{j};
-                        tparam{j,3} = obj.inname(j);
+                        x = obj.paramNames{j};
+                        tparam.(x){1} = obj.iterations{i}{j};
+                        tparam.(x){2} = obj.inname(j);
                     end
                     obj.outputs{i} = obj.program(obj.dataPath, obj.template, tparam);
                 end

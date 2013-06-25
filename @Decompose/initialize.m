@@ -4,7 +4,7 @@ function initialize(obj)
 fullList = [obj.fragList{1}(:);obj.fragList{2}(:)];
 keywords = ['td ', obj.keywords];
 tempdir = writeTPL(obj,obj.fullIn.filename,fullList,keywords);
-obj.full = Gaussian([tempdir,'\'],obj.fullIn.filename,{});
+obj.full = Gaussian([tempdir,'\'],obj.fullIn.filename,struct);
 obj.full.run();
 
 % fragment calcs
@@ -20,7 +20,7 @@ rLink{2} = obj.fullIn.rcart(:,obj.links(2)) - ...
 for ifrag = 1:2
    name = [obj.fullIn.filename,'-',int2str(ifrag)];
    tempdir = writeTPL(obj,name,obj.fragList{ifrag},obj.keywords,rLink{ifrag});
-   obj.frags{ifrag} =  Gaussian([tempdir,'\'],name,{});
+   obj.frags{ifrag} =  Gaussian([tempdir,'\'],name,struct);
    obj.frags{ifrag}.run();
 end
 

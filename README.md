@@ -12,7 +12,7 @@ The `Base` class has a minimal implementation with just three properties and two
         properties
             dataPath % the path in which the template resides
             template % the name of the template without a file extension
-            params   % a cell array of parameter names and their corresponding values to replace them with.
+            params   % a struct with parameter names and their corresponding values to replace them with.
             filename % the name of the file with all the parameters added to it without any file extensions or path
         end
         methods
@@ -81,28 +81,22 @@ Here is an example Gaussian template for Hydrogen with two possible parameters t
 Parameters
 ----------
 
-Parameters take the form of an N by 3 cell array. The first cell is the name of the parameter in the template file. The second cell is a cell array of possible values to fill the parameter with. The final cell is a boolean value of weather or not the parameter gets added to the final name.
+Parameters take the form of a struct where the struct field names are the parameter names to be replaced. Each field has a cell array inside of it with two values. 1) the possible replacement values and 2) and a boolean value of whether or not that parameter gets added to the name of the job. The part in name is optional, if a value is not given, `false` will be assumed.
 
-    {                                                           ...
-        {'PARAMETER_NAME', {P1, P2, ..., PN},  PART_OF_NAME},   ...
-        {'PARAMETER_NAME2', {P1, P2, ..., PN}, PART_OF_NAME},   ...
-    }
+    params.PARAM1 = {{P1, P2, ..., PN},  PART_OF_NAME};
+    params.PARAM2 = {{P1, P2, ..., PN},  PART_OF_NAME};
 
 A basic example of a parameter set is as follows:
 
-    {                               ...
-        {'METHOD', {'mp2'},  1},    ...
-        {'BASIS', {'6-21G'}, 1},    ...
-    };
+    params.METHOD = {{'mp2'}, 1};
+    params.BASIS = {{'6-21G'}, 1};
 
 When applied to the template mentioned above this will create/run a single hydrogen molecule with the method `mp2`, the basis `6-21G` and a final filename of `h2_mp2_6-21G`.
 
 This example can easily be expanded to include many more basis sets or methods.
 
-    {                                               ...
-        {'METHOD', {'mp2', 'B3LYP'},  1},           ...
-        {'BASIS', {'6-21G', 'STO-3G', '6-31G'}, 1}, ...
-    };
+    params.METHOD = {{'mp2', 'B3LYP'}, 1};
+    params.BASIS = {{'6-21G', 'STO-3G', '6-31G'}, 1};
 
 This will create/run 6 hydrogen molecules with the basis sets/methods.
 
@@ -115,11 +109,9 @@ This will create/run 6 hydrogen molecules with the basis sets/methods.
 
 Now, if there was another parameter that was added to the template file, say `BONDLEN`.
 
-    {                                               ...
-        {'METHOD', {'mp2', 'B3LYP'},  1},           ...
-        {'BASIS', {'6-21G', 'STO-3G', '6-31G'}, 1}, ...
-        {'BONDLEN', [.2:.1:2], 1},                  ...
-    };
+    params.METHOD = {{'mp2', 'B3LYP'}, 1};
+    params.BASIS = {{'STO-3G', '6-21G', '6-31G'}, 1};
+    params.BONDLEN = {[.5:.1:2.5], 1};
 
 This would create/run 114 (2\*3\*19) hydrogen molecules with all of the combinations of those parameters.
 
@@ -134,3 +126,5 @@ Notes
 -----
 
 There is a problem with the difference in the way that Gaussian and Matlab interpret types, so if you are making using a parameter that uses integers it might not work.
+
+The change from cell arrays to structs was to better accommodate the workflow for INDO. This change also allows for a simpler access to specific parameter names.
