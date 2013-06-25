@@ -73,20 +73,22 @@ yoffset = [-1.5 -.5 .5 1.5] * sy;
 
 bb = boundingBox(obj.full.rcart);
 homo = obj.full.Nelectrons/2;
-for j = -1:2
+for i = -1:2
     center(1) = -bb.minx - (bb.width/2);
-    center(2) = -bb.miny - (bb.height/2) + bb.height * (yoffset(j+2));
-    obj.full.drawStructureOrb(homo+j, center, scale);
+    center(2) = -bb.miny - (bb.height/2) + bb.height * (yoffset(i+2));
+    obj.full.drawStructureOrb(homo+i, center, scale);
     
-    a = obj.full.orb(:,homo+j);
     S = obj.full.overlap;
-    frag1 = a;
-    nOrbs1 = length(find(obj.frags{1}.atom ~= obj.links(1)));
-    frag1(nOrbs1-1:end) = 0;
-    frag2 = a;
-    frag2(1:nOrbs1+1) = 0;
-    left = frag1' * S * frag1;
-    right = frag2' * S * frag2;
+    ranges{1} = find(obj.full.atom <= obj.links(1));
+    ranges{2} = find(obj.full.atom >= obj.links(2));
+    popFrags = zeros(2,2);
+    for j=1:2
+        for k = 1:2
+            popFrags(j,k) = obj.full.orb(ranges{j},homo+i)' * S(ranges{j},ranges{k}) * obj.full.orb(ranges{k},homo+i);
+        end
+    end
+    left = popFrags(1,1) + 0.5 * popFrags(1,2) + 0.5 * popFrags(2,1);
+    right = popFrags(2,2) + 0.5 * popFrags(1,2) + 0.5 * popFrags(1,2);
     text(center(1)-(bb.width/2), center(2), sprintf('%.2f',left), 'horizontalalignment', 'right');
     text(center(1)+(bb.width/2), center(2), sprintf('%.2f',right), 'horizontalalignment', 'left');
 end
