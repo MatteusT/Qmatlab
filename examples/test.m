@@ -1,6 +1,7 @@
 %clear classes
 % This is a test of running just one molecule
-
+cd('..');
+%%
 qmatlab = pwd;
 
 params.METHOD = {{'mp2'}, 1};

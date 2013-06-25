@@ -1,5 +1,6 @@
 %% start by doing an optimization of butadiene
 clear classes
+cd('..');
 qmatlab = pwd;
 
 mat1 = [qmatlab, '\testdat\gstart.mat'];

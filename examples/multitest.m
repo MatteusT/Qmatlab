@@ -2,7 +2,7 @@
 % This is an example of running tests with multiple parameters
 % In this example, various basis sets are used to plot the energy of
 % hydrogen based on the bond length.
-
+cd('..');
 qmatlab = pwd;
 
 range = [.5:.1:2.5];

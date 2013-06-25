@@ -1,3 +1,4 @@
+cd('..');
 qmatlab = pwd;
 
 path = 'C:\Users\ccollins\Desktop\start\ordered\';
