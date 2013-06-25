@@ -10,10 +10,10 @@ function drawES(obj,figNum,width,xoffset)
         x = (i-.5)*spacing+xoffset;
         ncomp = length(m.Ecomp{i});
         t = 0;
-        spacing2 = width / max([50 ncomp]); % keep clusters together
+        spacing2 = width / max([35 ncomp]); % keep clusters together
         for ic = 1:ncomp
             t1 = m.Ecomp{i}{ic};
-            if (t1.amp.^2 > 0.0)     
+            if (t1.amp.^2 > 0.2)     
                 hold on;
                 plot([x+t*spacing2 x+t*spacing2],[m.Eorb(t1.filled) m.Eorb(t1.empty)],'r-');
                 t = t + 1;

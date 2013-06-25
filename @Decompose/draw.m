@@ -3,6 +3,7 @@ function draw(obj,piOnly,figNum)
 if (nargin < 2)
    figNum = 1;
 end
+figNum = figNum * 2 - 1;
 
 xp = {[0    0.5];
    [2.25 2.75];
@@ -61,7 +62,7 @@ obj.drawES(figNum, abs(xp{2}(1)-xp{2}(2)), xp{2}(1));
 
 
 %%
-figure(10+figNum);
+figure(figNum+1);
 % draw structures and orb magnitudes
 scale = 1;
 sx = 1.1;
