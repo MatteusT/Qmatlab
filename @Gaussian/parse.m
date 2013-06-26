@@ -260,7 +260,7 @@ try
     fclose(fid1);
     text = t1{1};
 
-    try:
+    try
         phrase = {'***','Overlap','***'};
         loc = utils.findText(text, phrase, issueErrors);
         obj.overlap= zeros(Nenergies,Nenergies);
