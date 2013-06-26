@@ -1,6 +1,6 @@
 Qmatlab
 =======
-A library for running and parsing Gaussian output from Matlab.
+A library for running/parsing Gaussian, Ampac, and Indo outputs from Matlab.
 
 Automation API
 --------------
@@ -54,7 +54,7 @@ All of the objects are stored in the `Controller.outputs` cell array.
 
 So, for example, this would run the template `h2` at `some/path` through Gaussian. After running the calculation, the energey of the molecule is extracted.
 
-    c = Controller('some/path', 'h2', {}, @Gaussian);
+    c = Controller('some/path', 'h2', struct, @Gaussian);
     c.runAll();
     e = c.ouputs{1}.Ehf;
 
@@ -122,9 +122,23 @@ This would create/run 114 (2\*3\*19) hydrogen molecules with all of the combinat
     {'B3LYP' '6-31G', 2}
 
 
+Run Single Instance
+-------------------
+
+A single instance of a molecule can be done by using the class for that respective program.
+
+    params.METHOD = {'B3LYP', 1};
+    params.BASIS = {'STO-3G', 1};
+
+    g = Gaussian('a\path\to\the\files', 'H2', params);
+    g.run()
+
+
 Notes
 -----
 
 There is a problem with the difference in the way that Gaussian and Matlab interpret types, so if you are making using a parameter that uses integers it might not work.
 
 The change from cell arrays to structs was to better accommodate the workflow for INDO. This change also allows for a simpler access to specific parameter names.
+
+Currently, there is an optimization for running calculations that assumes that if there is an output file for a job already, then it has already been done. For example, if the log file for a Gaussian calculation is already in the folder, the calculation will not run. It will skip the calculation and just parse the file. This can be problematic if you do not delete old/invalid output files.
