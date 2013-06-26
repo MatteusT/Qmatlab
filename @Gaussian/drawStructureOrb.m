@@ -26,12 +26,15 @@ function drawStructureOrb(obj, orbital, offset, scale)
             end
         end
         if obj.Z(j) > 6
-            hold on;
-            if obj.Z(j) == 16
-                color = 'y';
-            else
-                color = [1 .5 0];
+            switch obj.Z(j)
+               case 8
+                   color = 'r';
+                case 15
+                  color = [1 .5 0];
+                case 16
+                  color = 'y';
             end
+            hold on;
             t = abs(scale)*.1;
             rectangle('Position',[posx(j)*scale-t,posy(j)*scale-t,t*2,t*2],'Curvature',[1,1],'FaceColor',color);
         end
@@ -43,10 +46,10 @@ function drawStructureOrb(obj, orbital, offset, scale)
         if length(a1) == 0
             continue
         end
-        r = sign(sum(a1)) * norm(a1) * scale * 2;
+        r = sign(sum(a1)) * sqrt(norm(a1) * abs(scale) * 2);
         x = posx(j) * scale;
         y = posy(j) * scale;
-        drawCircle(x, y, r*scale);
+        utils.drawCircle(x, y, r*scale);
         hold on;
     end
 end

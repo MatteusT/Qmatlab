@@ -8,12 +8,12 @@ mols = {    ...
     '2B', 1:15, 16:23, [15 16]; ...
     '2C', 1:15, 16:23, [15 16]; ...
 };
-objs = {};
+objs = cell(size(mols,1));
 
-dataPath = ['C:\Users\ccollins\Desktop\start\ordered\cart\'];
+dataPath = 'C:\Users\ccollins\Desktop\start\ordered\cart\';
 for i=1:size(mols,1)
     disp(mols{i, 1});
-    gstart = Gaussian(dataPath,mols{i,1},{});
+    gstart = Gaussian(dataPath,mols{i,1},struct);
     gstart.run();
 
     fragList{1} = mols{i,2};

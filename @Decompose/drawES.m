@@ -1,32 +1,22 @@
-function drawES(obj,figNum)
+function drawES(obj,figNum,width,xoffset)
     if (nargin < 2)
        figNum = 1;
     end
     figure(figNum); %should match figure number from draw.m
-    hold on;
     m = obj.full;
     nlevels = length(m.Ees);
-    userIn = -1;
-    while (userIn ~= 0)
-        for i=1:nlevels
-            disp([num2str(i),' ',num2str(m.Ees(i)),' f= ',num2str(m.Ef(i))]);
-        end
-        userIn = input('Pick a level (0 to exit) ');
-        % plot from x= [2.25 2.75]
-        if (i>0 && i<=nlevels && userIn~=0)
-            ncomp = length(m.Ecomp{userIn});
-            x = 2.25;
-            xstep = (2.75-2.25)/ncomp;
-            for ic = 1:ncomp
-                t1 = m.Ecomp{userIn}{ic};
-                if (t1.amp.^2 > 0.2)     
-                    hold on;
-                    plot([x x],[m.Eorb(t1.filled) m.Eorb(t1.empty)],'r-');
-                    x = x + xstep;
-                    %display transitions and amplitudes
-                    disp([num2str(t1.filled), '->',...
-                        num2str(t1.empty),' Amplitude: ', num2str(t1.amp)])
-                end
+    spacing = width/nlevels;
+    for i = 1:nlevels
+        x = (i-.5)*spacing+xoffset;
+        ncomp = length(m.Ecomp{i});
+        t = 0;
+        spacing2 = width / max([35 ncomp]); % keep clusters together
+        for ic = 1:ncomp
+            t1 = m.Ecomp{i}{ic};
+            if (t1.amp.^2 > 0.2)     
+                hold on;
+                plot([x+t*spacing2 x+t*spacing2],[m.Eorb(t1.filled) m.Eorb(t1.empty)],'r-','lineWidth',10*t1.amp.^2);
+                t = t + 1;
             end
         end
     end

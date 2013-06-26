@@ -1,3 +1,4 @@
+cd('..');
 qmatlab = pwd;
 
 path = 'C:\Users\ccollins\Desktop\start\ordered\';
@@ -8,11 +9,11 @@ frags = cell(length(mols), 3);
 for i = 1:length(mols)
     disp(mols{i});
 %%  Parse
-    f1 = Gaussian(path, mols{i}(1),{});
+    f1 = Gaussian(path, mols{i}(1),struct);
     f1.parse();
-    m = Gaussian(path, mols{i},{});
+    m = Gaussian(path, mols{i},struct);
     m.parse();
-    f2 = Gaussian(path, mols{i}(2),{});
+    f2 = Gaussian(path, mols{i}(2),struct);
     f2.parse();
 
     t = [all(f1.Z(1:end-1)==m.Z(1:length(f1.Z)-1)), ...

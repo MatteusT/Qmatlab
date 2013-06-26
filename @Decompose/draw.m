@@ -1,7 +1,9 @@
 function draw(obj,piOnly,figNum)
+%%
 if (nargin < 2)
    figNum = 1;
 end
+figNum = figNum * 2 - 1;
 
 xp = {[0    0.5];
    [2.25 2.75];
@@ -56,21 +58,39 @@ for ifrag = 1:2
    end
 end
 
+obj.drawES(figNum, abs(xp{2}(1)-xp{2}(2)), xp{2}(1));
+
+
+%%
+figure(figNum+1);
+% draw structures and orb magnitudes
 scale = 1;
 sx = 1.1;
-xoffset = [-.5 .5] * sx;
+xoffset = [-.75 .75] * sx;
 sy = 1.1;
 yoffset = [-1.5 -.5 .5 1.5] * sy;
 
 
-figure(10+figNum);
-% draw structures and orb magnitudes
 bb = boundingBox(obj.full.rcart);
 homo = obj.full.Nelectrons/2;
-for j = -1:2
+for i = -1:2
     center(1) = -bb.minx - (bb.width/2);
-    center(2) = -bb.miny - (bb.height/2) + bb.height * (yoffset(j+2));
-    obj.full.drawStructureOrb(homo+j, center, scale);
+    center(2) = -bb.miny - (bb.height/2) + bb.height * (yoffset(i+2));
+    obj.full.drawStructureOrb(homo+i, center, scale);
+    
+    S = obj.full.overlap;
+    ranges{1} = find(obj.full.atom <= obj.links(1));
+    ranges{2} = find(obj.full.atom >= obj.links(2));
+    popFrags = zeros(2,2);
+    for j=1:2
+        for k = 1:2
+            popFrags(j,k) = obj.full.orb(ranges{j},homo+i)' * S(ranges{j},ranges{k}) * obj.full.orb(ranges{k},homo+i);
+        end
+    end
+    left = popFrags(1,1) + 0.5 * popFrags(1,2) + 0.5 * popFrags(2,1);
+    right = popFrags(2,2) + 0.5 * popFrags(1,2) + 0.5 * popFrags(1,2);
+    text(center(1)-(bb.width/2), center(2), sprintf('%.2f',left), 'horizontalalignment', 'right');
+    text(center(1)+(bb.width/2), center(2), sprintf('%.2f',right), 'horizontalalignment', 'left');
 end
 
 values = {'left', obj.frags{1}; 'right', obj.frags{2}};
@@ -78,14 +98,14 @@ for j = 1:size(values,1)
     homo = values{j,2}.Nelectrons/2;
     tbb = boundingBox(values{j,2}.rcart);
     for k = 0:1
-        center(1) = -tbb.minx - (tbb.width/2) + (bb.width + tbb.width) * xoffset(j);
+        center(1) = -tbb.minx - (tbb.width/2) + (bb.width) * xoffset(j) + sign(xoffset(j))*tbb.width/2;
         center(2) = -tbb.miny - (tbb.height/2) + tbb.height * (yoffset(k+2));
         values{j,2}.drawStructureOrb(homo+k, center, scale);
     end
 end
 
 end
-
+%%
 function res = piCharacter(m, iorb)
   % m is a guassian calc for a molecule lying in x,y plane
   a1 = m.orb((m.type == 1) & (m.subtype == 3) , iorb);
