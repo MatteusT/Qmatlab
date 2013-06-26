@@ -250,6 +250,13 @@ for i=1:ndensities
    end
 end
 
+phrase = {'Charge', 'I'};
+loc = utils.findText(text, phrase, issueErrors);
+obj.charge = str2double(text{loc+2});
+
+phrase = {'Multiplicity'};
+loc = utils.findText(text, phrase, issueErrors);
+obj.multiplicity = str2double(text{loc+2});
 
 
 try
