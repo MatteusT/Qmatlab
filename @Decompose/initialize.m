@@ -3,7 +3,8 @@ function initialize(obj)
 % Calculation on the full molecule
 fullList = [obj.fragList{1}(:);obj.fragList{2}(:)];
 keywords = ['td ', obj.keywords];
-tempdir = writeTPL(obj,obj.fullIn.filename,fullList,keywords);
+name = obj.fullIn.filename;
+tempdir = obj.fullIn.writeTPL(name,fullList,keywords);
 obj.full = Gaussian(tempdir,obj.fullIn.filename,struct);
 obj.full.run();
 
@@ -19,7 +20,7 @@ rLink{2} = obj.fullIn.rcart(:,obj.links(2)) - ...
    obj.rlinks(2) * direction/norm(direction);
 for ifrag = 1:2
    name = [obj.fullIn.filename,'-',int2str(ifrag)];
-   tempdir = writeTPL(obj,name,obj.fragList{ifrag},obj.keywords,rLink{ifrag});
+   tempdir = obj.full.writeTPL(name,obj.fragList{ifrag},obj.keywords,rLink{ifrag});
    obj.frags{ifrag} =  Gaussian(tempdir,name,struct);
    obj.frags{ifrag}.run();
 end
@@ -45,37 +46,3 @@ for ifrag = 1:2
    obj.overlap{ifrag} = ofrag' * Stemp * ofull;
 end
 end
-
-
-function tempDir = writeTPL(obj,jobname,atoms,keywords,rLink)
-newline = char(10);
-syms{1} = 'H'; syms{6} = 'C'; syms{7} = 'N'; syms{8} = 'O';
-syms{15} = 'P'; syms{16} = 'S';
-tpl_file = [jobname,'.tpl'];
-tempDir = [tempname('C:\G09W\Scratch'), '\'];
-mkdir(tempDir);
-fid1 = fopen([tempDir,tpl_file],'w');
-
-fwrite(fid1,['%chk=temp.chk',newline]);
-fwrite(fid1,['# ',keywords,' NoSymmetry iop(3/33=4) pop=regular',newline]);
-fwrite(fid1,newline);
-fwrite(fid1,jobname);
-fwrite(fid1,newline);
-fwrite(fid1,newline);
-fwrite(fid1,'0 1');
-fwrite(fid1,newline);
-for iatom = atoms(:)'
-   fwrite(fid1,[' ',syms{obj.fullIn.Z(iatom)},' ']);
-   for ic = 1:3
-      fwrite(fid1,[num2str(obj.fullIn.rcart(ic,iatom)),' ']);
-   end
-   fwrite(fid1,newline);
-end
-if (nargin > 4)
-   fwrite(fid1,[' H ',num2str(rLink(:)'),newline]);
-end
-fwrite(fid1,newline);
-
-fclose(fid1);
-end
-
