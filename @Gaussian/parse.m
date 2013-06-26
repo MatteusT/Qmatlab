@@ -266,7 +266,17 @@ try
     t1 = textscan(fid1,'%s');
     fclose(fid1);
     text = t1{1};
-
+    
+    phrase = {'#'};
+    loc = utils.findText(text, phrase, issueErrors);
+    words = {};
+    i = 0;
+    while i == 1 || text{loc+i+1}(1) ~= '-'
+        i = i + 1;
+        words{i} = text{loc+i};
+    end
+    obj.keywords = words;
+    
     try
         phrase = {'***','Overlap','***'};
         loc = utils.findText(text, phrase, issueErrors);

@@ -24,6 +24,7 @@ classdef Gaussian < Base
         Ecomp
         charge
         multiplicity
+        keywords
     end
     methods
         function obj = Gaussian(dataPath, template, params)
