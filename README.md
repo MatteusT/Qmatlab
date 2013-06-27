@@ -77,6 +77,8 @@ Here is an example Gaussian template for Hydrogen with two possible parameters t
        B1             0.60000000
 
 
+NOTE: The using temp.chk for the name of the checkfile is not a suggestion, it is a requirement.
+
 
 Parameters
 ----------
