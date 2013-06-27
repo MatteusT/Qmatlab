@@ -137,7 +137,7 @@ A single instance of a molecule can be done by using the class for that respecti
 Notes
 -----
 
-There is a problem with the difference in the way that Gaussian and Matlab interpret types, so if you are making using a parameter that uses integers it might not work.
+There is a problem with the difference in the way that Gaussian and Matlab interpret types, so if you are making a parameter that uses integers it might not work.
 
 The change from cell arrays to structs was to better accommodate the workflow for INDO. This change also allows for a simpler access to specific parameter names.
 
