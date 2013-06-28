@@ -17,28 +17,10 @@ end
 % draw overlap lines
 dx = 0.0;
 xc = {[xp{1}(2)+dx xp{2}(1)-dx] [xp{3}(1)-dx xp{2}(2)+dx]};
-
 threshold = .25;
 for ifrag = 1:2
-   ol = obj.overlap{ifrag}.^2;
-   Efrag = obj.frags{ifrag}.Eorb;
-   Efull = obj.full.Eorb;
-   for j = 1:length(Efrag)
-      for k = 1:length(Efull)
-         if (~piOnly || (obj.full.piCharacter(k)>0.1))
-            if ol(j,k)>threshold
-               e1 = Efrag(j);
-               e2 = Efull(k);
-               if (k <= obj.full.Nelectrons/2)
-                  format = 'b';
-               else
-                  format = 'g';
-               end
-               plot(xc{ifrag},[e1 e2],[format,':']);
-            end
-         end
-      end
-   end
+    xs = xc{ifrag};
+    obj.drawOverlap(figNum, ifrag, piOnly, xs, threshold);
 end
 
 obj.drawES(figNum, abs(xp{2}(1)-xp{2}(2)), xp{2}(1));
