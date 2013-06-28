@@ -23,7 +23,7 @@ for ifrag = 1:2
     obj.drawOverlap(figNum, ifrag, piOnly, xs, threshold);
 end
 
-obj.drawES(figNum, abs(xp{2}(1)-xp{2}(2)), xp{2}(1));
+obj.full.drawES(figNum, abs(xp{2}(1)-xp{2}(2)), xp{2}(1));
 
 
 %%
