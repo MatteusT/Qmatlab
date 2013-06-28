@@ -24,7 +24,7 @@ for ifrag = 1:3
       else
          format = 'g'; % empty orbs are green
       end
-      if (piOnly && (piCharacter(ft{ifrag},iorb) < 0.1))
+      if (piOnly && (ft{ifrag}.piCharacter(iorb) < 0.1))
          format = 'y'; % non-pi will be yellow
       end
       plot(xp{ifrag}, [e e], format);
@@ -42,7 +42,7 @@ for ifrag = 1:2
    Efull = obj.full.Eorb;
    for j = 1:length(Efrag)
       for k = 1:length(Efull)
-         if (~piOnly || (piCharacter(obj.full,k)>0.1))
+         if (~piOnly || (obj.full.piCharacter(k)>0.1))
             if ol(j,k)>threshold
                e1 = Efrag(j);
                e2 = Efull(k);
@@ -106,11 +106,6 @@ end
 
 end
 %%
-function res = piCharacter(m, iorb)
-  % m is a guassian calc for a molecule lying in x,y plane
-  a1 = m.orb((m.type == 1) & (m.subtype == 3) , iorb);
-  res = sum(a1.^2);
-end
 
 function res = boundingBox(positions)
     res.minx = min(positions(1,:));
