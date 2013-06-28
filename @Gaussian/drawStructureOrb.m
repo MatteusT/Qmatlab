@@ -19,8 +19,8 @@ function drawStructureOrb(obj, orbital, offset, scale)
             dist = norm([dx, dy]);
             if (dist - limit) < 0
                 hold on;
-                xs = posx([j k]) * scale;
-                ys = posy([j k]) * scale;
+                xs = posx([j k]) * scale(1);
+                ys = posy([j k]) * scale(2);
                 plot(xs, ys, 'Color', [0, 0, 0]);
                 hold on;
             end
@@ -36,7 +36,9 @@ function drawStructureOrb(obj, orbital, offset, scale)
             end
             hold on;
             t = abs(scale)*.1;
-            rectangle('Position',[posx(j)*scale-t,posy(j)*scale-t,t*2,t*2],'Curvature',[1,1],'FaceColor',color);
+            px = posx(j)*scale(1)-t(1);
+            py = posy(j)*scale(2)-t(2);
+            rectangle('Position',[px,py,t(1)*2,t(2)*2],'Curvature',[1,1],'FaceColor',color);
         end
     end
 
@@ -46,10 +48,10 @@ function drawStructureOrb(obj, orbital, offset, scale)
         if length(a1) == 0
             continue
         end
-        r = sign(sum(a1)) * sqrt(norm(a1) * abs(scale) * 2);
-        x = posx(j) * scale;
-        y = posy(j) * scale;
-        utils.drawCircle(x, y, r*scale);
+        r = sign(sum(a1)) * sqrt(norm(a1) * abs(scale(1)) * 2);
+        x = posx(j) * scale(1);
+        y = posy(j) * scale(2);
+        utils.drawCircle(x, y, r*scale(1));
         hold on;
     end
 end

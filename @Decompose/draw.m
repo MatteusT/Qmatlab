@@ -29,7 +29,7 @@ obj.full.drawES(figNum, abs(xp{2}(1)-xp{2}(2)), xp{2}(1));
 %%
 figure(figNum+1);
 % draw structures and orb magnitudes
-scale = 1;
+scale = [1 1];
 sx = 1.1;
 xoffset = [-.75 .75] * sx;
 sy = 1.1;
@@ -41,7 +41,12 @@ homo = obj.full.Nelectrons/2;
 for i = -1:2
     center(1) = -bb.minx - (bb.width/2);
     center(2) = -bb.miny - (bb.height/2) + bb.height * (yoffset(i+2));
-    obj.full.drawStructureOrb(homo+i, center, scale);
+    if obj.full.rcart(1,obj.links(1)) > obj.full.rcart(1,obj.links(2))
+        s = [-1 * scale(1), scale(2)];
+    else
+        s = scale;
+    end
+    obj.full.drawStructureOrb(homo+i, center, s);
     obj.drawPercents(figNum+1, homo+i, center, (bb.width/2));
 end
 
