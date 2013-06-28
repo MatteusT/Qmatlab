@@ -42,20 +42,7 @@ for i = -1:2
     center(1) = -bb.minx - (bb.width/2);
     center(2) = -bb.miny - (bb.height/2) + bb.height * (yoffset(i+2));
     obj.full.drawStructureOrb(homo+i, center, scale);
-    
-    S = obj.full.overlap;
-    ranges{1} = find(obj.full.atom <= obj.links(1));
-    ranges{2} = find(obj.full.atom >= obj.links(2));
-    popFrags = zeros(2,2);
-    for j=1:2
-        for k = 1:2
-            popFrags(j,k) = obj.full.orb(ranges{j},homo+i)' * S(ranges{j},ranges{k}) * obj.full.orb(ranges{k},homo+i);
-        end
-    end
-    left = popFrags(1,1) + 0.5 * popFrags(1,2) + 0.5 * popFrags(2,1);
-    right = popFrags(2,2) + 0.5 * popFrags(1,2) + 0.5 * popFrags(1,2);
-    text(center(1)-(bb.width/2), center(2), sprintf('%.2f',left), 'horizontalalignment', 'right');
-    text(center(1)+(bb.width/2), center(2), sprintf('%.2f',right), 'horizontalalignment', 'left');
+    obj.drawPercents(figNum+1, homo+i, center, (bb.width/2));
 end
 
 values = {'left', obj.frags{1}; 'right', obj.frags{2}};
