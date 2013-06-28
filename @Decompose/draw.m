@@ -5,30 +5,13 @@ if (nargin < 2)
 end
 figNum = figNum * 2 - 1;
 
+% draw levels
 xp = {[0    0.5];
    [2.25 2.75];
    [4.5 5]};
-% draw levels
 ft = {obj.frags{1}, obj.full, obj.frags{2}};
-nbasis = [size(obj.frags{1}.orb,1), size(obj.full.orb,1), ...
-   size(obj.frags{2}.orb,1)];
-
-figure(figNum);
-clf;
-hold on;
 for ifrag = 1:3
-   for iorb = 1:nbasis(ifrag)
-      e = ft{ifrag}.Eorb(iorb);
-      if (iorb <= ft{ifrag}.Nelectrons/2)
-         format = 'b'; % filled orbs are blue
-      else
-         format = 'g'; % empty orbs are green
-      end
-      if (piOnly && (ft{ifrag}.piCharacter(iorb) < 0.1))
-         format = 'y'; % non-pi will be yellow
-      end
-      plot(xp{ifrag}, [e e], format);
-   end
+    ft{ifrag}.drawEnergyLevels(figNum, xp{ifrag}, piOnly);
 end
 
 % draw overlap lines
