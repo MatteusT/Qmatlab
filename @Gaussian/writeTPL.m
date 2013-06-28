@@ -21,7 +21,7 @@ function tempDir = writeTPL(obj,jobname,atoms,keywords,rLink)
     for iatom = atoms(:)'
        fwrite(fid1,[' ',syms{obj.Z(iatom)},' ']);
        for ic = 1:3
-          fwrite(fid1,[num2str(obj.rcart(ic,iatom)),' ']);
+          fwrite(fid1,sprintf('%.4f ',obj.rcart(ic,iatom)));
        end
        fwrite(fid1,newline);
     end
