@@ -37,7 +37,7 @@ yoffset = [-1.5 -.5 .5 1.5] * sy;
 
 
 bb = boundingBox(obj.full.rcart);
-homo = obj.full.Nelectrons/2;
+homo = ceil(obj.full.Nelectrons/2);
 for i = -1:2
     center(1) = -bb.minx - (bb.width/2);
     center(2) = -bb.miny - (bb.height/2) + bb.height * (yoffset(i+2));
@@ -52,7 +52,7 @@ end
 
 values = {'left', obj.frags{1}; 'right', obj.frags{2}};
 for j = 1:size(values,1)
-    homo = values{j,2}.Nelectrons/2;
+    homo = ceil(values{j,2}.Nelectrons/2);
     tbb = boundingBox(values{j,2}.rcart);
     for k = 0:1
         center(1) = -tbb.minx - (tbb.width/2) + (bb.width) * xoffset(j) + sign(xoffset(j))*tbb.width/2;
