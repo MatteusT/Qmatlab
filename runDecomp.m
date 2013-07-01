@@ -9,6 +9,7 @@ mols = {    ...
     '2C', 1:15, 16:23, [15 16]; ...
 };
 objs = cell(size(mols,1), 1);
+e = zeros(size(objs,1)*2,1);
 
 dataPath = 'C:\Users\ccollins\Desktop\start\ordered\cart\';
 for i=1:size(mols,1)
@@ -23,7 +24,18 @@ for i=1:size(mols,1)
     keywords = 'b3lyp/sto-3g';
     obj = Decompose(gstart,fragList,links,rlinks,keywords);
     obj.initialize();
-
-    obj.draw(1,i);
     objs{i} = obj;
+
+    homo = objs{i}.full.Nelectrons/2;
+    e(i*2-1) = objs{i}.full.Eorb(homo+6);
+    e(i*2) = objs{i}.full.Eorb(homo-5);
+end
+
+ymax = max(e);
+ymin = min(e);
+
+for i=1:size(objs,1)
+    objs{i}.draw(1,i);
+    figure(i * 2 - 1);
+    axis([0 5 ymin ymax]);
 end
