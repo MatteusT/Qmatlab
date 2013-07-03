@@ -1,5 +1,5 @@
 function values = decompose(obj, atomLists, orbital)
-    ranges = cell(length(atomLists));
+    ranges = cell(length(atomLists),1);
     for i = 1:length(atomLists)
         ranges{i} = ismember(obj.atom,atomLists{i});
     end
