@@ -12,7 +12,7 @@ function drawPercents(obj, figNum, orb, center, xoffset)
         end
     end
     left = popFrags(1,1) + 0.5 * popFrags(1,2) + 0.5 * popFrags(2,1);
-    right = popFrags(2,2) + 0.5 * popFrags(1,2) + 0.5 * popFrags(1,2);
+    right = popFrags(2,2) + 0.5 * popFrags(1,2) + 0.5 * popFrags(2,1);
     text(center(1)-xoffset, center(2), sprintf('%.2f',left), 'horizontalalignment', 'right');
     text(center(1)+xoffset, center(2), sprintf('%.2f',right), 'horizontalalignment', 'left');
 end
