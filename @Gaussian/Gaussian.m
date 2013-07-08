@@ -31,6 +31,7 @@ classdef Gaussian < Base
            obj = obj@Base(dataPath, template, params);
         end
         function run(obj)
+            warning('off', 'MATLAB:DELETE:FileNotFound');
             g09exe = 'C:\G09W\g09.exe';
             gaussianPath = 'C:\G09W';
 
