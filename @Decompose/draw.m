@@ -51,7 +51,7 @@ for i = -1:2
         s = scale;
     end
     obj.full.drawStructureOrb(homo+i, center, s);
-    obj.drawPercents(figNum+1, homo+i, center, (bb.width/2));
+    obj.drawPercents(figNum+1, homo+i, [0, center(2)], (bb.width/2));
 end
 
 values = {'left', obj.frags{1}; 'right', obj.frags{2}};
