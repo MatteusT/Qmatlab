@@ -35,6 +35,10 @@ xoffset = [-.75 .75] * sx;
 sy = 1.1;
 yoffset = [-1.5 -.5 .5 1.5] * sy;
 
+objs = {obj.full, obj.frags{1}, obj.frags{2}};
+for i = 1:length(objs)
+    objs{i}.reorient();
+end
 
 bb = obj.full.boundingBox();
 homo = ceil(obj.full.Nelectrons/2);
