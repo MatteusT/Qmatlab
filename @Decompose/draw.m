@@ -58,6 +58,12 @@ values = {'left', obj.frags{1}; 'right', obj.frags{2}};
 for j = 1:size(values,1)
     homo = ceil(values{j,2}.Nelectrons/2);
     tbb = values{j,2}.boundingBox();
+
+    if (j == 1 && values{j,2}.rcart(1,end) ~= tbb.maxx) || (j == 2 && values{j,2}.rcart(1,end) ~= tbb.minx)
+        values{j,2}.rcart(1,:) = values{j,2}.rcart(1,:) * -1;
+    end
+    
+    tbb = values{j,2}.boundingBox();
     for k = 0:1
         center(1) = -tbb.minx - (tbb.width/2) + (bb.width) * xoffset(j) + sign(xoffset(j))*tbb.width/2;
         center(2) = -tbb.miny - (tbb.height/2) + tbb.height * (yoffset(k+2));
