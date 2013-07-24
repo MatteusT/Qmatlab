@@ -35,8 +35,12 @@ xoffset = [-.75 .75] * sx;
 sy = 1.1;
 yoffset = [-1.5 -.5 .5 1.5] * sy;
 
+objs = {obj.full, obj.frags{1}, obj.frags{2}};
+for i = 1:length(objs)
+    objs{i}.reorient();
+end
 
-bb = boundingBox(obj.full.rcart);
+bb = obj.full.boundingBox();
 homo = ceil(obj.full.Nelectrons/2);
 for i = -1:2
     center(1) = -bb.minx - (bb.width/2);
@@ -47,13 +51,19 @@ for i = -1:2
         s = scale;
     end
     obj.full.drawStructureOrb(homo+i, center, s);
-    obj.drawPercents(figNum+1, homo+i, center, (bb.width/2));
+    obj.drawPercents(figNum+1, homo+i, [0, center(2)], (bb.width/2));
 end
 
 values = {'left', obj.frags{1}; 'right', obj.frags{2}};
 for j = 1:size(values,1)
     homo = ceil(values{j,2}.Nelectrons/2);
-    tbb = boundingBox(values{j,2}.rcart);
+    tbb = values{j,2}.boundingBox();
+
+    if (j == 1 && values{j,2}.rcart(1,end) ~= tbb.maxx) || (j == 2 && values{j,2}.rcart(1,end) ~= tbb.minx)
+        values{j,2}.rcart(1,:) = values{j,2}.rcart(1,:) * -1;
+    end
+    
+    tbb = values{j,2}.boundingBox();
     for k = 0:1
         center(1) = -tbb.minx - (tbb.width/2) + (bb.width) * xoffset(j) + sign(xoffset(j))*tbb.width/2;
         center(2) = -tbb.miny - (tbb.height/2) + tbb.height * (yoffset(k+2));
@@ -61,12 +71,4 @@ for j = 1:size(values,1)
     end
 end
 
-end
-%%
-
-function res = boundingBox(positions)
-    res.minx = min(positions(1,:));
-    res.miny = min(positions(2,:));
-    res.width = max(positions(1,:))-res.minx;
-    res.height = max(positions(2,:))-res.miny;
 end

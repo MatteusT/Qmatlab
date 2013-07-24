@@ -31,6 +31,7 @@ classdef Gaussian < Base
            obj = obj@Base(dataPath, template, params);
         end
         function run(obj)
+            warning('off', 'MATLAB:DELETE:FileNotFound');
             g09exe = 'C:\G09W\g09.exe';
             gaussianPath = 'C:\G09W';
 
@@ -40,6 +41,7 @@ classdef Gaussian < Base
             log_file = [obj.dataPath, obj.filename, '.log'];
             gjf_file = [obj.dataPath, obj.filename, '.gjf'];
             fch_file = [obj.dataPath, obj.filename, '.fch'];
+            chk_file = [obj.dataPath, obj.filename, '.chk'];
 
             fid2 = fopen(log_file,'r');
             if (fid2 == -1)
@@ -61,11 +63,15 @@ classdef Gaussian < Base
                     try
                         resp1 = system([g09exe,' ',gjf_file,' ',log_file]);
                         % convert checkpoint file to a formatted checkpoint file
-                        resp2 = system([gaussianPath,'\formchk.exe ','temp.chk ', fch_file]);
+                        try
+                            resp2 = system([gaussianPath,'\formchk.exe',chk_file, ' ', fchk_file]);
+                        catch
+                            resp2 = system([gaussianPath,'\formchk.exe ','temp.chk ', fch_file]);
+                        end
                         if ( resp1 == 2057 )
                             disp( '  removing temporary files' );
                             delete( 'fort.6', 'gxx.d2e', 'gxx.inp', 'gxx.int', 'gxx.scr', ...
-                                'temp.chk', 'temp.fch', 'temp.rwf' )
+                                'temp.chk', 'temp.fch', 'temp.rwf', chk_file)
                         end
                     catch
                         disp( 'Failed, retrying...' );
@@ -74,7 +80,7 @@ classdef Gaussian < Base
                 end
             end
             parse(obj);
-            delete('temp.chk', 'fort.*');
+            delete('temp.chk', 'fort.*', chk_file);
             fclose('all');
         end
     end

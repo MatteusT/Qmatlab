@@ -1,9 +1,14 @@
 function dispOrb(obj, orb)
     gausspath = 'C:\G09W\';
-    fch_file = [' ', obj.dataPath, obj.filename, '.fch '];
+    orb = ceil(orb);
+    
+    fch_file = [obj.dataPath, obj.filename, '.fch'];
+    if ~exist(fch_file)
+        fch_file = [obj.dataPath, obj.filename, '.fchk'];
+    end
     cube_file = [obj.dataPath, obj.filename, '-', num2str(orb), '.cube '];
     if ~exist(cube_file)
-        command = [gausspath, 'cubegen.exe 0 MO=', num2str(orb), fch_file, cube_file, '0 h'];
+        command = [gausspath, 'cubegen.exe 0 MO=', num2str(orb), ' ', fch_file, ' ', cube_file, '0 h'];
         disp(command);
         system(command);
     end
@@ -40,7 +45,7 @@ function dispOrb(obj, orb)
     view([0,0,1]);
     daspect([1,1,1]);
 
-    obj.drawStructureOrb(orb,[mean(d{1}),mean(d{2})],-2);
+    obj.drawStructureOrb(orb,[mean(d{1}),mean(d{2})],[-2, -2]);
     set(gca,'xdir','reverse');
 end
 

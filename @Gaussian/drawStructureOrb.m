@@ -14,9 +14,8 @@ function drawStructureOrb(obj, orbital, offset, scale)
                     limit = 1.7;
                 end
             end
-            dx = obj.rcart(1,j) - obj.rcart(1,k);
-            dy = obj.rcart(2,j) - obj.rcart(2,k);
-            dist = norm([dx, dy]);
+            delta = obj.rcart(:,j) - obj.rcart(:,k);
+            dist = norm(delta);
             if (dist - limit) < 0
                 hold on;
                 xs = posx([j k]) * scale(1);
