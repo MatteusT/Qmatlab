@@ -1,30 +1,9 @@
-function parameters(obj, fileprefix)
+function parameters(obj)
 
 fields = obj.config.field;
 charge = obj.config.charge;
 nstates= obj.config.nstates;
 norbs = obj.config.norbs;
-
-% if (nargin < 5)
-%     obj.field = [0.000 0.000 0.000];
-% else
-%     obj.field = field;
-% end
-% if (nargin < 4)
-%     obj.charge = 0;
-% else
-%     obj.charge = charge;
-% end
-% if (nargin < 3)
-%     obj.nstates = 25 ;
-% else
-%     obj.nstates = nstates;
-% end
-% if (nargin < 2)
-%     obj.norbs = 100;
-% else
-%     obj.norbs = norbs;
-% end
 
 %create the file
 fid0 = fopen([obj.dataPath,'parameters.txt'],'wt');
@@ -48,7 +27,7 @@ file = fileread([obj.dataPath,'parameters.txt']);
 %jobname
 job = find(ismember(scan,'jobname')==1);
 scan(job+2);
-t1 = strrep(file,scan{job+2},fileprefix);
+t1 = strrep(file,scan{job+2},obj.fileprefix);
 
 %charge
 chrg = find(ismember(scan,'charge')==1);

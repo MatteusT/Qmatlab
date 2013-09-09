@@ -1,29 +1,30 @@
 classdef Indo < handle
    properties (SetAccess = private)
       % Input parameters
-      config     % see defaultConfig() for contents
-      dataPath   % directory for the data (do not end with \)
-      jobName    % will read structure from ampac out file  jobname.out
-      parameterFile
+      config        % see defaultConfig() for contents
+      dataPath      % directory for the data (do not end with \)
+      jobName       % will read structure from ampac out file  jobname.out
+      parameterFile % directory for the parameter file
+      fileprefix    % dataPath\jobName
       % and store indo results in jobname.ido
       % Atomic basis set:
-      norb       % number of atomic basis functions, and hf orbitals
-      aorbAtom   % (1,i) atom on which the ith atomic orbital resides
-      aorbType   % (1,i) type of ith atomic orbital
+      norb          % number of atomic basis functions, and hf orbitals
+      aorbAtom      % (1,i) atom on which the ith atomic orbital resides
+      aorbType      % (1,i) type of ith atomic orbital
       %  {s1=0,s2=1,p2x=2,p2y=3,p2z=4,s3=5,p3x=6,p3y=7,p3z=8}
       % Hartree Fock Results:
-      nfilled    % number of filled molecular orbitals
-      hfE        % HF ground state energy
-      orbE       % (1,i) energy of ith orbital
-      orb        % (i,j) ith component of jth orbital
-      indoOutput % output from indo
+      nfilled       % number of filled molecular orbitals
+      hfE           % HF ground state energy
+      orbE          % (1,i) energy of ith orbital
+      orb           % (i,j) ith component of jth orbital
+      indoOutput    % output from indo
       % SCI results
-      nsci        % number of sci states, with first being ground state
-      nscibasis   % number of basis functions (first being ground state)
-      esci        % (1,i) energies of ith sci state
-      r           %( i,j, icomp) transition (position) operator icomp = x,y,z
-      wfsci       % (i,j)  ith component of jth state
-      ehsci       % (i,1) hole of the ith SCI basis function (0 if GS)
+      nsci          % number of sci states, with first being ground state
+      nscibasis     % number of basis functions (first being ground state)
+      esci          % (1,i) energies of ith sci state
+      r             %( i,j, icomp) transition (position) operator icomp = x,y,z
+      wfsci         % (i,j)  ith component of jth state
+      ehsci         % (i,1) hole of the ith SCI basis function (0 if GS)
       % (i,2) = elec of the ith SCI basis function (0 if GS)
       
       indoExe = '"c:\mscpp\demo-dci\Release\demo-dci.exe"';
@@ -44,6 +45,7 @@ classdef Indo < handle
          res.nstates = 25;
          res.field = [0,0,0];
          res.potfile = '';
+         res.gaussFile = 0;
       end
    end
    methods
@@ -68,9 +70,18 @@ classdef Indo < handle
          else
              res.parameterFile = parameterFileIn;
          end
-             fileprefix= [res.dataPath,res.jobName];
+          if (nargin < 3)
+              res.fileprefix = 'fileprefix';
+          else
+              res.fileprefix= [res.dataPath,res.jobName];
+          end
+         
          if (nargin > 0)
-            parameters(res, fileprefix); % generates parameterfile (will need to add potfile)
+             if (ConfigIn.gaussFile)
+                 res.chk2indo();
+                 res.fileprefix = [res.fileprefix,'_g'];
+             end      
+            res.parameters(); % generates parameterfile (will need to add potfile)
             jobstring = [res.indoExe,' ',res.parameterFile];
          
             disp(['about to do: ',jobstring]);

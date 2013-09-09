@@ -26,6 +26,7 @@ c.runAll()
 In = Indo;
 dataPath = 'C:\Users\Matteus\Qmatlab\testdat\';
 jobName = 'ch4_sam1';
-parameterFile = 'C:\Users\Matteus\Qmatlab\testdat\parameters';
+parameterFile = 'C:\Users\Matteus\Qmatlab\testdat\parameters.txt';
 config = In.defaultConfig();
-Indo(config,dataPath,jobName,parameterFile);
+config.charge = 0;
+ind = Indo(config,dataPath,jobName,parameterFile);

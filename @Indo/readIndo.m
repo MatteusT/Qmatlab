@@ -1,6 +1,6 @@
 function readIndo(obj)
 
-filename = [obj.dataPath,obj.jobName,'.ido'];
+filename = [obj.fileprefix,'.ido'];
 fid1 = fopen(filename);
 if (fid1 == -1)
    error(['in Indo.readIndo, could not find file: ',filename]);
